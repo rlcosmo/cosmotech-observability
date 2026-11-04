@@ -51,6 +51,8 @@ def main() -> None:
         (f"https://glpi.{DOMAIN}/api.php/v2/Assistance/Ticket", 401),
         (f"https://kestra.{DOMAIN}/api/v1/instance", 401),
         (f"https://grafana.{DOMAIN}/login", 200),
+        (f"https://argocd.{DOMAIN}/", 200),
+        (f"https://argocd.{DOMAIN}/api/v1/applications", 401),
         (f"https://grafana.{DOMAIN}/api/search", 401),
         (f"https://prometheus-aws-eks-istio-lab-dev.{DOMAIN}/", 403),
         (f"https://alertmanager.{DOMAIN}/", 403),
@@ -62,7 +64,7 @@ def main() -> None:
     code, _ = response(f"https://glpi.{DOMAIN}/", headers={"Host": "unrouted.invalid"})
     results.append({"check": "waf-unknown-host", "passed": code == 403, "status": code})
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
-        results.extend(pool.map(closed_port, [8080, 8081, 8088, 3306, 5432]))
+        results.extend(pool.map(closed_port, [8080, 8081, 8088, 3306, 5432, 6443, 6379, 30080]))
     Path("external-security-evidence.json").write_text(json.dumps(results, indent=2) + "\n")
     print(json.dumps(results, indent=2))
     if not all(result["passed"] for result in results):
