@@ -1,6 +1,9 @@
 name: external-security
 
 on:
+  push:
+    branches: [main]
+    paths: [scripts/external_security_smoke.py, .github/workflows/external-security.yml]
   workflow_dispatch:
 
 permissions:
