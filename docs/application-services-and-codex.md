@@ -35,3 +35,7 @@ Backup lógico diário do PostgreSQL às 03:17, retenção de sete dias; a sele�
 Grafana confirmou os dashboards atualizados via API: observabilidade com 34 painéis e AWS com 27. Todas as expressões PromQL foram aceitas; 16 serviços UP, nenhum DOWN/desconhecido e nove montagens das três EC2 chegaram ao Prometheus. Testes verificam DOWN com nome do serviço, falha de sondagem sem falso UP, isolamento de credenciais na publicação e rejeição de cota inválida.
 
 O trace sintético `2f21ad81a92c0035378cac8ff6de13f7` foi enviado no EKS pelo pipeline real, encontrado em `zabbix.otel_traces` no ClickHouse e contado como um registro. Isso valida ingestão fim a fim sem criar pedido de negócio. APM exibirá traces reais das aplicações quando as operações instrumentadas receberem tráfego.
+
+## Redirecionamento do nome antigo
+
+O hostname antigo `zabix.cosmotechsolutions.com.br` retornava 403 no WAF, enquanto o nome correto com dois b respondia 200. O Ingress `zabbix-legacy-redirect` faz HTTP 301 do nome antigo para `https://zabbix.cosmotechsolutions.com.br`, preservando caminho e query string. O WAF aceita exclusivamente esses dois nomes no conjunto Zabbix, mantendo o limite de 1200 requisições por IP e as demais regras. Credenciais permanecem no parâmetro SecureString já documentado; nenhum segredo é versionado. Em diagnóstico de novo 403, conferir primeiro o hostname e o redirecionamento, depois a limitação por IP e a origem da resposta.

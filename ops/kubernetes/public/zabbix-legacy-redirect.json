@@ -1,0 +1,38 @@
+{
+  "apiVersion": "networking.k8s.io/v1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "zabbix-legacy-redirect",
+    "namespace": "observability",
+    "annotations": {
+      "alb.ingress.kubernetes.io/group.name": "observability",
+      "alb.ingress.kubernetes.io/group.order": "13",
+      "alb.ingress.kubernetes.io/listen-ports": "[{\"HTTPS\":443}]",
+      "alb.ingress.kubernetes.io/actions.zabbix-canonical-redirect": "{\"type\":\"redirect\",\"redirectConfig\":{\"host\":\"zabbix.cosmotechsolutions.com.br\",\"port\":\"443\",\"protocol\":\"HTTPS\",\"path\":\"/#{path}\",\"query\":\"#{query}\",\"statusCode\":\"HTTP_301\"}}"
+    }
+  },
+  "spec": {
+    "ingressClassName": "alb",
+    "rules": [
+      {
+        "host": "zabix.cosmotechsolutions.com.br",
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "pathType": "Prefix",
+              "backend": {
+                "service": {
+                  "name": "zabbix-canonical-redirect",
+                  "port": {
+                    "name": "use-annotation"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
