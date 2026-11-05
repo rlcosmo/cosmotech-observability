@@ -361,7 +361,7 @@ def access(c):
         )
         y += 31
     y = c.paragraph(
-        "A sessão é autorizada por IAM; não usa a senha do Grafana, GLPI ou Zabbix. Quando a política permitir, sudo -i abre um shell administrativo. Não há senha Linux compartilhada configurada para esse acesso.",
+        "A conta Linux ubuntu existe nesses servidores. A sessão SSM é autorizada por IAM; não usa a senha do Grafana, GLPI ou Zabbix. Quando a política permitir, sudo -i abre um shell administrativo. Não há senha Linux compartilhada configurada para esse acesso.",
         40,
         y + 10,
         515,
