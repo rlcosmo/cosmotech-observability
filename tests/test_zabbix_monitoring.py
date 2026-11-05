@@ -87,3 +87,24 @@ def test_optional_vault_fields_preserve_transform_error_semantics():
     assert result[0]['error_handler'] == result[1]['error_handler'] == 1
     assert result[2] == original[2]
     assert original[0]['error_handler'] == '0'
+
+
+def test_optional_vault_reconciliation_preserves_api_failure_visibility():
+    discovery = load_discovery()
+    z = Mock()
+    z.api.side_effect = [[{'hostid': 'vault', 'parentTemplates': [{'name': 'AWS Backup Vault by HTTP'}]}],
+                         [{'lastvalue': json.dumps({'error': 'AccessDenied'})}]]
+    discovery.configure_optional_vault_items(z)
+    assert all(call.args[0] != 'item.update' for call in z.api.call_args_list)
+
+
+def test_optional_vault_reconciliation_reenables_configured_fields_only():
+    discovery = load_discovery()
+    z = Mock()
+    z.api.side_effect = [[{'hostid': 'vault', 'parentTemplates': [{'name': 'AWS Backup Vault by HTTP'}]}],
+                         [{'lastvalue': json.dumps({'BackupVaultName': 'test', 'MinRetentionDays': 7})}],
+                         [{'itemid': 'min', 'key_': 'aws.backup_vault.retention.min', 'status': '1'},
+                          {'itemid': 'max', 'key_': 'aws.backup_vault.retention.max', 'status': '0'}], {}, {}]
+    discovery.configure_optional_vault_items(z)
+    updates = [call.args[1] for call in z.api.call_args_list if call.args[0] == 'item.update']
+    assert updates == [{'itemid': 'min', 'status': 0}, {'itemid': 'max', 'status': 1}]

@@ -25,7 +25,7 @@ O reconciliador aplica correções limitadas aos templates nativos instalados de
 1. Prototypes AWS HTTP herdam a ausência de interface do controlador, evitando tratar IDs de instâncias/buckets como IPs de agente.
 2. Nomes visíveis EC2 incluem o Instance ID, evitando colisão entre nós com o mesmo Name tag.
 3. Scripts de Backup recebem `metadata_auth` e o argumento `/` ausente na chamada STS de seis argumentos.
-4. Campos opcionais de vault sem Vault Lock/air gap são descartados quando ausentes. O item e trigger independentes de erro da API são preservados.
+4. Campos opcionais de vault sem Vault Lock/air gap são descartados quando ausentes. O item e trigger independentes de erro da API são preservados. Nos hosts cujo retorno AWS confirma que esses campos não estão configurados, os quatro itens de datas/limites ficam desabilitados e são reabilitados automaticamente quando os campos passam a existir; o estado de lock continua sendo coletado.
 
 Reavaliar essas correções antes de atualizar os templates oficiais. O script é idempotente e as substituições de código são exatas.
 
