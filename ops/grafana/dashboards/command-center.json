@@ -228,10 +228,20 @@
           "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"5\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
           "instant": true,
           "range": false,
-          "format": "table"
+          "format": "time_series"
         }
       ],
       "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
         {
           "id": "filterFieldsByName",
           "options": {
@@ -371,10 +381,20 @@
           "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"4\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
           "instant": true,
           "range": false,
-          "format": "table"
+          "format": "time_series"
         }
       ],
       "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
         {
           "id": "filterFieldsByName",
           "options": {
@@ -691,10 +711,20 @@
           "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"2\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
           "instant": true,
           "range": false,
-          "format": "table"
+          "format": "time_series"
         }
       ],
       "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
         {
           "id": "filterFieldsByName",
           "options": {
@@ -834,10 +864,20 @@
           "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"3\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
           "instant": true,
           "range": false,
-          "format": "table"
+          "format": "time_series"
         }
       ],
       "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
         {
           "id": "filterFieldsByName",
           "options": {

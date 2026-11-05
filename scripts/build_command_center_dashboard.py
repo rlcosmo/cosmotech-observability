@@ -35,8 +35,9 @@ def build() -> dict:
         add({'type': 'table', 'title': name+' · problemas e hosts', 'datasource': DS,
              'gridPos': {'x': x, 'y': y+4, 'w': 12, 'h': 12},
              'targets': [{'refId': 'A', 'expr': '(time() - lab_zabbix_problem_started_timestamp_seconds{severity="'+str(severity)+'"}) and on() ('+FRESH+')',
-                          'instant': True, 'range': False, 'format': 'table'}],
-             'transformations': [{'id': 'filterFieldsByName', 'options': {'include': {'names': ['host','problem','Value','acknowledged','event_id']}}},
+                          'instant': True, 'range': False, 'format': 'time_series'}],
+             'transformations': [{'id': 'labelsToFields', 'options': {'mode': 'columns'}},
+                 {'id': 'merge', 'options': {}}, {'id': 'filterFieldsByName', 'options': {'include': {'names': ['host','problem','Value','acknowledged','event_id']}}},
                  {'id': 'organize', 'options': {'indexByName': {'host': 0, 'problem': 1, 'Value': 2, 'acknowledged': 3, 'event_id': 4},
                     'renameByName': {'host': 'Host', 'problem': 'Problema', 'Value': 'Duração', 'acknowledged': 'Reconhecido', 'event_id': 'Evento'}}}],
              'fieldConfig': {'defaults': {'custom': {'align': 'auto', 'cellOptions': {'type': 'auto'}}}, 'overrides': [
