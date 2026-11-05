@@ -21,7 +21,8 @@ def dashboard(uid, title, description):
     return {"uid": uid, "title": title, "description": description, "schemaVersion": 39,
             "version": 0, "tags": ["cosmotech", "laboratorio"], "timezone": "browser",
             "time": {"from": "now-24h", "to": "now"}, "refresh": "1m", "editable": True,
-            "panels": [], "links": [{"type": "link", "title": "AWS e custos", "url": "/d/aws-account-costs-lab"},
+            "panels": [], "links": [{"type": "link", "title": "Command Center", "url": "/d/command-center"},
+                                     {"type": "link", "title": "AWS e custos", "url": "/d/aws-account-costs-lab"},
                                      {"type": "link", "title": "Observabilidade", "url": "/d/observability-tools-lab"}]}
 
 

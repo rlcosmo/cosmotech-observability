@@ -8,6 +8,7 @@ def build() -> dict:
     value = {'uid': 'applications-connectivity-lab', 'title': 'Aplicações | Logs e conexões', 'schemaVersion': 39,
         'version': 0, 'timezone': 'browser', 'time': {'from': 'now-1h', 'to': 'now'}, 'refresh': '30s',
         'tags': ['cosmotech', 'apm', 'logs'], 'panels': [], 'links': [
+            {'type': 'link', 'title': 'Command Center', 'url': '/d/command-center'},
             {'type': 'link', 'title': 'Zabbix AWS EKS e APM', 'url': 'https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=dashboard.view&dashboardid=439', 'targetBlank': True}]}
     value['panels'].append({'id': 1, 'type': 'text', 'title': 'Conexões reais a cada 5 minutos',
         'gridPos': {'x': 0, 'y': 0, 'w': 24, 'h': 4}, 'options': {'mode': 'markdown', 'content':

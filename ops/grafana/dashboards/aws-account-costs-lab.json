@@ -1404,6 +1404,11 @@
   "links": [
     {
       "type": "link",
+      "title": "Command Center",
+      "url": "/d/command-center"
+    },
+    {
+      "type": "link",
       "title": "AWS e custos",
       "url": "/d/aws-account-costs-lab"
     },

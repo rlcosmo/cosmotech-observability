@@ -271,6 +271,71 @@ def collect_inventory() -> list[str]:
     return lines
 
 
+
+ZABBIX_COMMAND_CENTER_SECRET = "cosmotech/grafana/command-center"
+ZABBIX_COMMAND_CENTER_URL = "https://zabbix.cosmotechsolutions.com.br/api_jsonrpc.php"
+ZABBIX_SEVERITIES = {2: "Warning", 3: "Average", 4: "High", 5: "Disaster"}
+
+
+def zabbix_request(token: str, method: str, params: dict) -> list:
+    """Call only the read methods granted to the dedicated service account."""
+    if method not in {"problem.get", "trigger.get"}:
+        raise ValueError("Command Center API method is not read-only")
+    request = urllib.request.Request(ZABBIX_COMMAND_CENTER_URL,
+        data=json.dumps({"jsonrpc": "2.0", "id": 1, "method": method, "params": params}).encode(),
+        headers={"Content-Type": "application/json-rpc", "Authorization": "Bearer "+token})
+    with urllib.request.urlopen(request, timeout=15) as response:
+        value = json.load(response)
+    if "error" in value or not isinstance(value.get("result"), list):
+        raise RuntimeError("Zabbix read API failed; sensitive diagnostics omitted")
+    return value["result"]
+
+
+def zabbix_problem_samples(problems: list[dict], triggers: list[dict]) -> list[str]:
+    """Export each unresolved, unsuppressed monitored event once, including acknowledged events."""
+    monitored = {t["triggerid"]: t for t in triggers}
+    counts = {severity: 0 for severity in ZABBIX_SEVERITIES}
+    lines, seen = [], set()
+    for problem in problems:
+        severity = int(problem["severity"])
+        event = str(problem["eventid"])
+        if (severity not in counts or event in seen or str(problem.get("r_eventid", "0")) != "0"
+                or str(problem.get("suppressed", "0")) == "1" or problem["objectid"] not in monitored):
+            continue
+        seen.add(event)
+        hosts = monitored[problem["objectid"]].get("hosts", [])
+        names = sorted({host.get("name", host.get("host", "unknown")) for host in hosts})
+        counts[severity] += 1
+        labels = {"event_id": event, "host": "; ".join(names)[:240] or "unknown",
+                  "problem": str(problem["name"])[:350], "severity": str(severity),
+                  "severity_name": ZABBIX_SEVERITIES[severity],
+                  "acknowledged": str(int(str(problem.get("acknowledged", "0")) == "1"))}
+        lines += [metric("zabbix_problem_active", 1, **labels),
+                  metric("zabbix_problem_started_timestamp_seconds", int(problem["clock"]), **labels)]
+    lines += [metric("zabbix_problem_count", count, severity=str(severity), severity_name=ZABBIX_SEVERITIES[severity])
+              for severity, count in counts.items()]
+    return lines
+
+
+def collect_zabbix_problems() -> list[str]:
+    """Read the API token from Secrets Manager in memory; never write credentials to cache."""
+    value = aws("secretsmanager", "get-secret-value", "--secret-id", ZABBIX_COMMAND_CENTER_SECRET)
+    credentials = json.loads(value["SecretString"])
+    if credentials.get("api_url") != ZABBIX_COMMAND_CENTER_URL or credentials["token_expires_at"] <= time.time():
+        raise ValueError("Zabbix Command Center credentials expired or invalid")
+    problems = zabbix_request(credentials["api_token"], "problem.get", {
+        "output": ["eventid", "objectid", "name", "clock", "severity", "acknowledged", "suppressed", "r_eventid"],
+        "source": 0, "object": 0, "recent": False, "suppressed": False,
+        "severities": [2, 3, 4, 5], "sortfield": ["eventid"], "sortorder": "DESC", "limit": 1001})
+    if len(problems) > 1000:
+        raise RuntimeError("Zabbix Command Center event limit reached; refusing a partial snapshot")
+    triggers = zabbix_request(credentials["api_token"], "trigger.get", {
+        "triggerids": sorted({p["objectid"] for p in problems}), "output": ["triggerid"],
+        "selectHosts": ["host", "name"], "monitored": True}) if problems else []
+    return zabbix_problem_samples(problems, triggers) + [
+        metric("zabbix_token_expiration_timestamp_seconds", credentials["token_expires_at"])]
+
+
 def collect_web() -> list[str]:
     def probe(item: tuple) -> list[str]:
         name, (url, path, expected) = item
@@ -307,7 +372,7 @@ def collect() -> None:
     groups = {"costs": (21600, collect_costs), "credits": (3600, collect_credits),
               "servers": (300, collect_servers), "inventory": (900, collect_inventory),
               "web": (45, collect_web), "application_hosts": (60, collect_application_hosts),
-              "codex": (60, collect_codex_quota)}
+              "codex": (60, collect_codex_quota), "zabbix": (45, collect_zabbix_problems)}
     for name, (ttl, collector) in groups.items():
         previous = cache.get(name, {})
         if now - previous.get("attempt", 0) < (ttl if previous.get("ok") else 300):

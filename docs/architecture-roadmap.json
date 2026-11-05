@@ -1,0 +1,88 @@
+{
+  "title": "Arquitetura e Roadmap",
+  "organization": "CosmoTech Solutions",
+  "region": "us-east-1",
+  "account": "414053644145",
+  "snapshot_date": "05/11/2026",
+  "platform": [
+    ["Amazon EKS 1.37", "Cluster de aplicações aws-eks-istio-lab-dev. Três nós Spot em duas zonas de disponibilidade."],
+    ["K3s 1.37.1", "Cluster separado na EC2 de gestão; hospeda o Argo CD e seus componentes."],
+    ["Argo CD 3.6.1", "Entrega GitOps: compara o estado do Git com o cluster e sincroniza as aplicações automaticamente."],
+    ["Orders API", "Aplicação Python 3.12. Recebe requisições, publica pedidos na fila e expõe saúde e diagnóstico HTTP."],
+    ["Orders Worker", "Consome a fila SQS, processa pedidos e persiste no DynamoDB. Possui endpoint próprio de saúde."],
+    ["HPA e Metrics Server", "HPA ajusta cada app de 1 a 4 réplicas por utilização. Metrics Server fornece métricas de recursos."],
+    ["Cluster Autoscaler", "Ajusta a quantidade de nós. O node group atual usa Spot, mínimo 1, desejado 3 e máximo 3."],
+    ["Istio 1.31.3", "Controla a malha de serviços e o ingress gateway. O listener HTTPS do NLB tem alerta de saúde pendente."],
+    ["Kyverno 1.19.2", "Políticas Kubernetes verificam requisitos dos recursos e geram relatórios de conformidade."],
+    ["AWS Load Balancer Controller", "Transforma Ingress/Services em configuração de ALB/NLB e registra os alvos das aplicações."],
+    ["VPC CNI, CoreDNS e kube-proxy", "Conectividade dos pods, resolução de nomes de serviços e encaminhamento de tráfego no Kubernetes."],
+    ["EBS CSI e Snapshot Controller", "Volumes persistentes EBS e snapshots para os componentes com estado."],
+    ["EKS Pod Identity", "Entrega permissões IAM aos componentes autorizados sem colocar chaves permanentes nos pods."],
+    ["Helm", "Gerencia as instalações e valores versionados das ferramentas nos clusters."]
+  ],
+  "observability": [
+    ["Grafana 13.3", "Portal visual de observabilidade. Command Center mostra Disaster/High acima e Warning/Average abaixo."],
+    ["Prometheus e Operator", "Coletam métricas e avaliam regras. O Operator gerencia a configuração nativa no Kubernetes."],
+    ["Node Exporter e kube-state-metrics", "Expõem uso dos nós e estado dos objetos Kubernetes: pods, réplicas, deployments e recursos."],
+    ["Alertmanager", "Agrupa, deduplica e encaminha alertas do Prometheus; existe integração com o SNS."],
+    ["Loki", "Armazena e consulta logs. Os logs das aplicações podem ser filtrados por serviço, pod e namespace."],
+    ["Grafana Alloy", "Coleta logs por nó e os encaminha ao Loki; o ramo das aplicações também envia logs para o APM."],
+    ["Tempo", "Armazena traces distribuídos para acompanhar uma chamada entre serviços."],
+    ["OpenTelemetry Collector", "Recebe telemetria OTLP, acrescenta contexto e entrega traces, métricas e logs aos destinos."],
+    ["Zabbix 8.0.0rc3", "Monitoria de hosts, serviços, AWS e APM. Descoberta AWS automática; versão pré-release instalada."],
+    ["Zabbix Agent 2", "Agentes ativos nas três EC2 de ferramentas; medem CPU, memória, discos e estado de serviços via TLS PSK."],
+    ["ClickHouse", "Banco de telemetria do APM Zabbix. Guarda os três sinais: traces, métricas e logs."],
+    ["Coletor da plataforma", "Na EC2 ITSM, consulta inventário/custos AWS e saúde dos serviços. Exporta os problemas do Zabbix ao Prometheus."],
+    ["Publicador de cota Codex", "Na estação autenticada, publica percentual disponível e renovação para o painel AWS. Depende da estação ativa."]
+  ],
+  "services": [
+    ["GLPI", "Gestão de chamados e ativos de TI. Executa em container na EC2 ITSM, com MariaDB."],
+    ["Kestra", "Orquestra automações e exibe os eventos das esteiras por cluster. Há interface pública e motor privado de automação."],
+    ["PostgreSQL e MariaDB", "PostgreSQL atende Kestra e configuração do Zabbix. MariaDB atende o GLPI; os bancos não ficam públicos."],
+    ["Redis", "Cache interno do Argo CD no cluster K3s. Não é o banco de negócio das aplicações."],
+    ["DynamoDB", "Persistência de pedidos, inventário e controle de processamento das aplicações."],
+    ["SQS e DLQ", "Fila desacopla API e worker. DLQ mantém mensagens que esgotam as tentativas de processamento."],
+    ["ECR", "Registro das imagens das aplicações, publicadas pelas esteiras e promovidas por referência imutável."],
+    ["ALB, NLB, ACM e WAF", "ALB entrega os hosts HTTPS; ACM fornece certificados e WAF aplica proteção web. NLB atende o gateway Istio."],
+    ["VPC, subnets e NAT", "Rede 10.20.0.0/16 em duas zonas. EC2 privadas usam saída controlada; não possuem IP público."],
+    ["EBS e StorageClass gp3", "Discos criptografados das EC2 e PVCs. Volumes de observabilidade usam política de retenção."],
+    ["S3 e AWS Backup", "Estado remoto do Terraform, artefatos/backups e recuperação de volumes. Existe vault de Backup monitorado."],
+    ["Secrets Manager e KMS", "Catálogo de credenciais de ferramentas, runtimes e contas de serviço; criptografia dos dados protegidos."],
+    ["IAM, STS e Systems Manager", "Permissões e credenciais temporárias. Session Manager permite administrar os três servidores de ferramentas."],
+    ["CloudWatch e SNS", "Métricas/alarme AWS e notificações. Logs da Lambda de teste externo são retidos por sete dias."],
+    ["Lambda e EventBridge Scheduler", "Funções serverless do laboratório e teste externo a cada cinco minutos dos dois hosts públicos."]
+  ],
+  "repos": [
+    ["cosmotech-orders-api", "Código, configuração Kubernetes e CI/CD da API."],
+    ["cosmotech-orders-worker", "Código, configuração Kubernetes e CI/CD do worker."],
+    ["cosmotech-gitops", "Estado promovido das aplicações, aplicações Argo e validação da entrega."],
+    ["cosmotech-infrastructure-iac", "Terraform e documentos operacionais que entregam configuração na AWS."],
+    ["cosmotech-observability", "Coletores, dashboards, monitoria, configurações e documentação."],
+    ["cosmotech-automation", "Fluxos Kestra e automações de operação/ITSM."]
+  ],
+  "hosts": [
+    ["ITSM / GLPI / Kestra", "10.20.11.150", "i-0def4e806c49cf60e", "Session Manager"],
+    ["Gestão / Argo CD", "10.20.11.199", "i-0b33fdd51332e04e5", "Session Manager"],
+    ["Zabbix / APM", "10.20.11.207", "i-02878f35eed1572d0", "Session Manager"],
+    ["Nó EKS · Spot", "10.20.12.232", "i-06eca999c1ddbece2", "Kubernetes; sem SSM"],
+    ["Nó EKS · Spot", "10.20.11.6", "i-053e392ef195d7d47", "Kubernetes; sem SSM"],
+    ["Nó EKS · Spot", "10.20.11.55", "i-068b0b89ca6f9e9ea", "Kubernetes; sem SSM"]
+  ],
+  "roadmap": [
+    {"phase": "Agora / base entregue", "owner": "Infra + DevOps", "state": "INSTALADO", "items": ["CI/CD automático das apps, GitOps e evidências no Kestra por cluster.", "HPA, hosts HTTPS, logs e chamadas de teste a cada cinco minutos.", "APM com três sinais, descoberta AWS e Command Center por severidade."]},
+    {"phase": "0–7 dias / estabilização", "owner": "Infra + Plataforma", "state": "PROPOSTO · P0", "items": ["Corrigir o target group HTTPS do NLB Istio que está sem alvos saudáveis.", "Validar responsáveis, escalonamento e runbooks de todos os alertas ativos.", "Revisar a pré-release Zabbix e testar a atualização/remoção do contorno do proxy em ambiente isolado."]},
+    {"phase": "7–30 dias / governança", "owner": "Segurança + DevOps", "state": "PROPOSTO · P1", "items": ["Padronizar acesso IAM/SSO com MFA e mínimo privilégio; formalizar gravação de sessões SSM.", "Instituir rotação de credenciais e tokens; o token do Command Center vence em 180 dias.", "Criar trail CloudTrail persistente e revisar retenção, custos e alertas de orçamento.", "Definir SLOs e correlacionar alertas Prometheus/Zabbix, evitando duplicação."]},
+    {"phase": "30–60 dias / resiliência", "owner": "Infra + Dados", "state": "PROPOSTO · P2", "items": ["Definir e medir RPO/RTO; repetir os testes de restauração já iniciados e executar um exercício completo de DR.", "Projetar alta disponibilidade das ferramentas e bancos hoje concentrados em EC2 individuais.", "Reavaliar retenção e capacidade de métricas/logs/traces conforme consumo real."]},
+    {"phase": "60–90 dias / produção", "owner": "Arquitetura + Engenharia", "state": "PROPOSTO · P3", "items": ["Separar ambientes e considerar base On-Demand para cargas críticas, mantendo Spot onde adequado.", "Evoluir bancos gerenciados/HA e recuperação entre zonas ou regiões conforme o RPO/RTO aprovado.", "Adicionar aprovações na esteira de produção quando essa etapa for implantada; o fluxo atual permanece automático."]}
+  ],
+  "links": [
+    ["Command Center", "https://grafana.cosmotechsolutions.com.br/d/command-center"],
+    ["Grafana / serviços e discos", "https://grafana.cosmotechsolutions.com.br/d/observability-tools-lab"],
+    ["Grafana / logs e conexões", "https://grafana.cosmotechsolutions.com.br/d/applications-connectivity-lab"],
+    ["Zabbix", "https://zabbix.cosmotechsolutions.com.br/"],
+    ["Argo CD", "https://argocd.cosmotechsolutions.com.br/"],
+    ["Kestra", "https://kestra.cosmotechsolutions.com.br/ui/"],
+    ["GLPI", "https://glpi.cosmotechsolutions.com.br/"],
+    ["AWS Session Manager", "https://us-east-1.console.aws.amazon.com/systems-manager/session-manager/sessions?region=us-east-1"]
+  ]
+}

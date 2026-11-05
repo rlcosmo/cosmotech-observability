@@ -7,3 +7,5 @@ Extracted from [aws-serverless-lab](https://github.com/rlcosmo/aws-serverless-la
 Consulte [logs, conexões e Zabbix](docs/synthetic-traffic-and-zabbix.md) para o dashboard, agentes EC2, APM e consultas Loki.
 
 APM com os três sinais e descoberta AWS: [operação, monitoramento e recuperação](docs/zabbix-apm-signals-and-discovery.md).
+
+Command Center: [dashboard, acesso EC2 e PDF da arquitetura](docs/command-center-and-ec2-access.md).

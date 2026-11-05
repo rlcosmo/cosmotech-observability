@@ -19,4 +19,5 @@ jobs:
       - run: bash -n scripts/install_lab_monitoring.sh ops/zabbix/install.sh
       - run: python scripts/build_lab_dashboards.py
       - run: python scripts/build_connectivity_dashboard.py
+      - run: python scripts/build_command_center_dashboard.py
       - run: git diff --exit-code -- ops/grafana/dashboards

@@ -260,6 +260,11 @@
   "links": [
     {
       "type": "link",
+      "title": "Command Center",
+      "url": "/d/command-center"
+    },
+    {
+      "type": "link",
       "title": "Zabbix AWS EKS e APM",
       "url": "https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=dashboard.view&dashboardid=439",
       "targetBlank": true

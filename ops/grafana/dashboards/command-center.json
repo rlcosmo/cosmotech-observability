@@ -1,0 +1,1142 @@
+{
+  "uid": "command-center",
+  "title": "CosmoTech | Command Center",
+  "schemaVersion": 39,
+  "version": 0,
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "tags": [
+    "cosmotech",
+    "command-center",
+    "zabbix",
+    "infra"
+  ],
+  "editable": true,
+  "panels": [
+    {
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 2
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**COMMAND CENTER** · Incidentes abertos por prioridade. Reconhecidos continuam visíveis; eventos resolvidos ou suprimidos ficam fora da visão. Atualização automática."
+      },
+      "id": 1
+    },
+    {
+      "type": "row",
+      "title": "RESPOSTA IMEDIATA · Disaster e High",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 2,
+        "w": 24,
+        "h": 1
+      },
+      "panels": [],
+      "id": 2
+    },
+    {
+      "type": "stat",
+      "title": "Disaster",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 3,
+        "w": 12,
+        "h": 4
+      },
+      "description": "Quantidade de eventos abertos, não suprimidos e com trigger/host monitorado. Sem coleta válida, exibe SEM COLETA.",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(sum(lab_zabbix_problem_count{severity=\"5\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))) or on() (-1 * (vector(1) unless on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))))",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "SEM COLETA",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "#299C46"
+              },
+              {
+                "value": 1,
+                "color": "#E02F44"
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "-1": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            },
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "id": 4
+    },
+    {
+      "type": "stat",
+      "title": "High",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 3,
+        "w": 12,
+        "h": 4
+      },
+      "description": "Quantidade de eventos abertos, não suprimidos e com trigger/host monitorado. Sem coleta válida, exibe SEM COLETA.",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(sum(lab_zabbix_problem_count{severity=\"4\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))) or on() (-1 * (vector(1) unless on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))))",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "SEM COLETA",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "#299C46"
+              },
+              {
+                "value": 1,
+                "color": "#FF6F61"
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "-1": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            },
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "id": 6
+    },
+    {
+      "type": "table",
+      "title": "Disaster · problemas e hosts",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 12,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"5\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "host",
+                "problem",
+                "Value",
+                "acknowledged",
+                "event_id"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "host": 0,
+              "problem": 1,
+              "Value": 2,
+              "acknowledged": 3,
+              "event_id": 4
+            },
+            "renameByName": {
+              "host": "Host",
+              "problem": "Problema",
+              "Value": "Duração",
+              "acknowledged": "Reconhecido",
+              "event_id": "Evento"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duração"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Problema"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reconhecido"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "Não"
+                      },
+                      "1": {
+                        "text": "Sim"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [
+          {
+            "displayName": "Duração",
+            "desc": true
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "links": [
+        {
+          "title": "Abrir problemas no Zabbix",
+          "url": "https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=problem.view",
+          "targetBlank": true
+        }
+      ],
+      "id": 5
+    },
+    {
+      "type": "table",
+      "title": "High · problemas e hosts",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 7,
+        "w": 12,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"4\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "host",
+                "problem",
+                "Value",
+                "acknowledged",
+                "event_id"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "host": 0,
+              "problem": 1,
+              "Value": 2,
+              "acknowledged": 3,
+              "event_id": 4
+            },
+            "renameByName": {
+              "host": "Host",
+              "problem": "Problema",
+              "Value": "Duração",
+              "acknowledged": "Reconhecido",
+              "event_id": "Evento"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duração"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Problema"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reconhecido"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "Não"
+                      },
+                      "1": {
+                        "text": "Sim"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [
+          {
+            "displayName": "Duração",
+            "desc": true
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "links": [
+        {
+          "title": "Abrir problemas no Zabbix",
+          "url": "https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=problem.view",
+          "targetBlank": true
+        }
+      ],
+      "id": 7
+    },
+    {
+      "type": "row",
+      "title": "ATENÇÃO OPERACIONAL · Warning e Average",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 24,
+        "h": 1
+      },
+      "panels": [],
+      "id": 3
+    },
+    {
+      "type": "stat",
+      "title": "Warning",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 12,
+        "h": 4
+      },
+      "description": "Quantidade de eventos abertos, não suprimidos e com trigger/host monitorado. Sem coleta válida, exibe SEM COLETA.",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(sum(lab_zabbix_problem_count{severity=\"2\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))) or on() (-1 * (vector(1) unless on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))))",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "SEM COLETA",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "#299C46"
+              },
+              {
+                "value": 1,
+                "color": "#F2CC0C"
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "-1": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            },
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "id": 8
+    },
+    {
+      "type": "stat",
+      "title": "Average",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 21,
+        "w": 12,
+        "h": 4
+      },
+      "description": "Quantidade de eventos abertos, não suprimidos e com trigger/host monitorado. Sem coleta válida, exibe SEM COLETA.",
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(sum(lab_zabbix_problem_count{severity=\"3\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))) or on() (-1 * (vector(1) unless on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))))",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "textMode": "value",
+        "justifyMode": "center",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "SEM COLETA",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "#299C46"
+              },
+              {
+                "value": 1,
+                "color": "#FF9830"
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "-1": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            },
+            {
+              "type": "special",
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "SEM COLETA",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "id": 10
+    },
+    {
+      "type": "table",
+      "title": "Warning · problemas e hosts",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 25,
+        "w": 12,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"2\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "host",
+                "problem",
+                "Value",
+                "acknowledged",
+                "event_id"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "host": 0,
+              "problem": 1,
+              "Value": 2,
+              "acknowledged": 3,
+              "event_id": 4
+            },
+            "renameByName": {
+              "host": "Host",
+              "problem": "Problema",
+              "Value": "Duração",
+              "acknowledged": "Reconhecido",
+              "event_id": "Evento"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duração"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Problema"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reconhecido"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "Não"
+                      },
+                      "1": {
+                        "text": "Sim"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [
+          {
+            "displayName": "Duração",
+            "desc": true
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "links": [
+        {
+          "title": "Abrir problemas no Zabbix",
+          "url": "https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=problem.view",
+          "targetBlank": true
+        }
+      ],
+      "id": 9
+    },
+    {
+      "type": "table",
+      "title": "Average · problemas e hosts",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 25,
+        "w": 12,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(time() - lab_zabbix_problem_started_timestamp_seconds{severity=\"3\"}) and on() ((max(lab_collection_success{group=\"zabbix\"}) == 1) and (time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"}) < 180))",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "host",
+                "problem",
+                "Value",
+                "acknowledged",
+                "event_id"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": {
+              "host": 0,
+              "problem": 1,
+              "Value": 2,
+              "acknowledged": 3,
+              "event_id": 4
+            },
+            "renameByName": {
+              "host": "Host",
+              "problem": "Problema",
+              "Value": "Duração",
+              "acknowledged": "Reconhecido",
+              "event_id": "Evento"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duração"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Problema"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reconhecido"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "Não"
+                      },
+                      "1": {
+                        "text": "Sim"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [
+          {
+            "displayName": "Duração",
+            "desc": true
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      },
+      "links": [
+        {
+          "title": "Abrir problemas no Zabbix",
+          "url": "https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=problem.view",
+          "targetBlank": true
+        }
+      ],
+      "id": 11
+    },
+    {
+      "type": "stat",
+      "title": "Coleta de alertas",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 38,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "min(lab_collection_success{group=\"zabbix\"})",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "SEM COLETA",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "red"
+              },
+              {
+                "value": 1,
+                "color": "green"
+              }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "FALHA",
+                  "color": "red"
+                },
+                "1": {
+                  "text": "OK",
+                  "color": "green"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "id": 12
+    },
+    {
+      "type": "stat",
+      "title": "Última coleta válida · idade",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 38,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "time() - max(lab_collection_last_success_timestamp_seconds{group=\"zabbix\"})",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 0,
+          "noValue": "SEM COLETA"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "id": 13
+    },
+    {
+      "type": "stat",
+      "title": "Integração · dias até renovar credencial",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 38,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(min(lab_zabbix_token_expiration_timestamp_seconds)-time())/86400",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "d",
+          "decimals": 0,
+          "noValue": "SEM COLETA"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "id": 14
+    }
+  ],
+  "links": [
+    {
+      "type": "link",
+      "title": "Problemas no Zabbix",
+      "url": "https://zabbix.cosmotechsolutions.com.br/zabbix.php?action=problem.view",
+      "targetBlank": true
+    },
+    {
+      "type": "link",
+      "title": "Serviços e discos",
+      "url": "/d/observability-tools-lab",
+      "targetBlank": true
+    },
+    {
+      "type": "link",
+      "title": "Logs e conexões",
+      "url": "/d/applications-connectivity-lab",
+      "targetBlank": true
+    },
+    {
+      "type": "link",
+      "title": "AWS e custos",
+      "url": "/d/aws-account-costs-lab",
+      "targetBlank": true
+    }
+  ]
+}
