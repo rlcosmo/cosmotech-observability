@@ -2,7 +2,7 @@ name: validate-observability
 on:
   push:
     branches: [main]
-    paths: [src/**, scripts/**, tests/**, ops/monitoring/**, ops/zabbix/**, requirements-dev.txt, .github/workflows/monitoring.yml]
+    paths: [src/**, scripts/**, tests/**, ops/monitoring/**, ops/zabbix/**, ops/zabbix-monitoring/**, requirements-dev.txt, .github/workflows/monitoring.yml]
   pull_request:
 permissions:
   contents: read
@@ -14,8 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pytest tests/test_lab_monitoring.py tests/test_codex_quota.py -q
-      - run: python -m compileall -q src scripts ops/zabbix
+      - run: python -m pytest tests/test_lab_monitoring.py tests/test_codex_quota.py tests/test_zabbix_monitoring.py -q
+      - run: python -m compileall -q src scripts ops/zabbix ops/zabbix-monitoring
       - run: bash -n scripts/install_lab_monitoring.sh ops/zabbix/install.sh
       - run: python scripts/build_lab_dashboards.py
+      - run: python scripts/build_connectivity_dashboard.py
       - run: git diff --exit-code -- ops/grafana/dashboards
