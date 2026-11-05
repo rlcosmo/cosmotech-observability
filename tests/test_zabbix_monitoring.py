@@ -32,3 +32,47 @@ def test_api_error_redacts_known_credentials():
         z.api('item.create', {})
     assert 'private-value' not in str(error.value)
     assert '<redacted>' in str(error.value)
+
+
+def load_discovery():
+    import sys
+    directory = Path(__file__).parents[1]/'ops/zabbix-monitoring'
+    module_spec = importlib.util.spec_from_file_location('discovery_config', directory/'configure_discovery.py')
+    module = importlib.util.module_from_spec(module_spec)
+    with patch.object(sys, 'path', [str(directory), *sys.path]):
+        module_spec.loader.exec_module(module)
+    return module
+
+
+def test_backup_role_signature_fix_is_bounded_and_idempotent():
+    discovery = load_discovery()
+    original = "AWS.request('GET', AWS.params.sts_region, 'sts', AWS.prepareParams(payload))"
+    fixed = discovery.fix_backup_script(original)
+    assert "AWS.request('GET', '/', AWS.params.sts_region" in fixed
+    assert discovery.fix_backup_script(fixed) == fixed
+    ordinary = "AWS.request('GET', region, 'ec2', params)"
+    assert discovery.fix_backup_script(ordinary) == ordinary
+
+
+def test_native_http_discovery_avoids_ip_and_duplicate_name_failures():
+    discovery = load_discovery()
+    calls = []
+
+    def api(method, params):
+        calls.append((method, params))
+        if method == 'template.get':
+            return [{'templateid': 'aws'}] if params['filter']['host'] == 'AWS by HTTP' else []
+        if method == 'discoveryrule.get':
+            return [{'itemid': 'rule', 'key_': 'aws.ec2.discovery', 'type': '18', 'parameters': []}]
+        if method == 'hostprototype.get':
+            return [{'hostid': 'prototype', 'host': '{#AWS.EC2.INSTANCE.ID}',
+                     'name': 'EC2 - {#AWS.EC2.INSTANCE.NAME}', 'custom_interfaces': '1'}]
+        return {}
+
+    z = Mock()
+    z.api.side_effect = api
+    discovery.repair_aws_template_defaults(z, 'cloud-group')
+    payload = next(params for method, params in calls if method == 'hostprototype.update')
+    assert payload['custom_interfaces'] == 0
+    assert '{#AWS.EC2.INSTANCE.ID}' in payload['name']
+    assert payload['groupLinks'] == [{'groupid': 'cloud-group'}]

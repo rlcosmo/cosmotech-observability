@@ -150,6 +150,32 @@
           "receivers": [
             "otlp"
           ]
+        },
+        "metrics": {
+          "receivers": [
+            "otlp"
+          ],
+          "processors": [
+            "memory_limiter",
+            "resource/clusters",
+            "batch"
+          ],
+          "exporters": [
+            "otlp_grpc/zabbix"
+          ]
+        },
+        "logs": {
+          "receivers": [
+            "otlp"
+          ],
+          "processors": [
+            "memory_limiter",
+            "resource/clusters",
+            "batch"
+          ],
+          "exporters": [
+            "otlp_grpc/zabbix"
+          ]
         }
       },
       "telemetry": {

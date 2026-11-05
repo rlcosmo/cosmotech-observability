@@ -2,7 +2,7 @@ name: validate-observability
 on:
   push:
     branches: [main]
-    paths: [src/**, scripts/**, tests/**, ops/monitoring/**, ops/zabbix/**, ops/zabbix-monitoring/**, requirements-dev.txt, .github/workflows/monitoring.yml]
+    paths: [src/**, scripts/**, tests/**, ops/monitoring/**, ops/zabbix/**, ops/zabbix-monitoring/**, ops/helm/**, requirements-dev.txt, .github/workflows/monitoring.yml]
   pull_request:
 permissions:
   contents: read
