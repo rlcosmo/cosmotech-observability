@@ -76,3 +76,14 @@ def test_native_http_discovery_avoids_ip_and_duplicate_name_failures():
     assert payload['custom_interfaces'] == 0
     assert '{#AWS.EC2.INSTANCE.ID}' in payload['name']
     assert payload['groupLinks'] == [{'groupid': 'cloud-group'}]
+
+
+def test_optional_vault_fields_preserve_transform_error_semantics():
+    discovery = load_discovery()
+    original = [{'type': '12', 'params': '$.LockDate', 'error_handler': '0', 'error_handler_params': ''},
+                {'type': '15', 'params': 'null', 'error_handler': '2', 'error_handler_params': 'Not locked'},
+                {'type': '21', 'params': 'return value;', 'error_handler': '0', 'error_handler_params': ''}]
+    result = discovery.optional_preprocessing(original)
+    assert result[0]['error_handler'] == result[1]['error_handler'] == 1
+    assert result[2] == original[2]
+    assert original[0]['error_handler'] == '0'
