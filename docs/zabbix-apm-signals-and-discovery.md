@@ -41,3 +41,7 @@ Alertas incluem ausência de sinais APM em 15 minutos, logs de erro, agente/serv
 ## Operação e recuperação
 
 As versões dos charts Alloy 1.15.0 e OpenTelemetry Collector 0.178.2 são preservadas. Aplicar os valores versionados em `ops/helm/values/` com `--reuse-values --server-side=false` e revisar o manifesto antes da atualização. Confirmar também os valores persistidos no release, não apenas a ConfigMap. Para recuperar o fluxo anterior, reverter o commit e os valores do Helm; não apagar os volumes Postgres/ClickHouse. O erro de ingestão do proxy APM nativo desta pré-release continua contornado pelo collector, preservando o schema e o frontend nativos.
+
+## Alerta operacional encontrado na implantação
+
+A descoberta encontrou um alerta real no NLB do Istio: o target group HTTPS `k8s-istiosys-istioing-281ec43271` aponta para a NodePort 31146, mapeada ao targetPort 8443 do gateway, sem targets saudáveis. Os três alvos retornaram `Target.FailedHealthChecks` no ELB. Esse listener é distinto das rotas públicas das aplicações atendidas pelo ALB, que continuam HTTP 200. O alerta foi preservado no Zabbix; nenhuma porta/listener foi removida para ocultá-lo. A correção do listener TLS exige alinhar o gateway/terminação TLS ao uso pretendido desse NLB.
