@@ -1,0 +1,38 @@
+{
+  "apiVersion": "networking.k8s.io/v1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "zabbix-public",
+    "namespace": "istio-system",
+    "annotations": {
+      "alb.ingress.kubernetes.io/group.name": "observability",
+      "alb.ingress.kubernetes.io/group.order": "12",
+      "alb.ingress.kubernetes.io/listen-ports": "[{\"HTTPS\":443}]",
+      "alb.ingress.kubernetes.io/actions.zabbix-public": "{\"type\": \"forward\", \"targetGroupARN\": \"arn:aws:elasticloadbalancing:us-east-1:414053644145:targetgroup/cosmotech-zabbix-dev/d25f83d546217e1c\"}"
+    }
+  },
+  "spec": {
+    "ingressClassName": "alb",
+    "rules": [
+      {
+        "host": "zabbix.cosmotechsolutions.com.br",
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "pathType": "Prefix",
+              "backend": {
+                "service": {
+                  "name": "zabbix-public",
+                  "port": {
+                    "name": "use-annotation"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

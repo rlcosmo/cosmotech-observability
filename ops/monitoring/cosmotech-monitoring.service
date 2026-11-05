@@ -1,0 +1,24 @@
+[Unit]
+Description=Collect cached lab AWS billing, inventory and web availability metrics
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/cosmotech/monitoring/lab_monitoring.py
+Environment=AWS_REGION=us-east-1
+Environment=AWS_DEFAULT_REGION=us-east-1
+Environment=LAB_AWS_CLI=/snap/aws-cli/current/bin/aws
+Environment=AWS_MAX_ATTEMPTS=2
+Environment=AWS_RETRY_MODE=standard
+StateDirectory=cosmotech-monitoring
+StateDirectoryMode=0755
+UMask=0022
+TimeoutStartSec=300
+MemoryMax=384M
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cosmotech-monitoring
