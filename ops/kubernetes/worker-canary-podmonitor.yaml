@@ -6,6 +6,7 @@ metadata:
   labels:
     release: prometheus
 spec:
+  podTargetLabels: [cosmotech.io/gmud-id]
   namespaceSelector:
     matchNames: [orders-worker]
   selector:

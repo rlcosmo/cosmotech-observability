@@ -1,6 +1,6 @@
 {
   "uid": "orders-worker-canary",
-  "title": "CosmoTech | Worker stable / canary",
+  "title": "CosmoTech | GMUD RCL · Worker estável e Canary",
   "schemaVersion": 39,
   "version": 1,
   "tags": [
@@ -14,7 +14,7 @@
     "to": "now"
   },
   "refresh": "15s",
-  "description": "Prepared dashboard; runtime queries must be validated after authorized deployment. No data is not zero.",
+  "description": "Métricas reais por versão e RCL. Sem dados bloqueia progressão; exportador SQS ainda pode não estar integrado. Não representa janela12h concluída.",
   "templating": {
     "list": [
       {
@@ -29,7 +29,7 @@
     {
       "id": 1,
       "type": "timeseries",
-      "title": "Messages by release",
+      "title": "Mensagens por RCL e versão",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -43,13 +43,13 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (version,channel,result) (rate(cosmotech_worker_messages_total[5m]))",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "expr": "sum by (version,channel,result,cosmotech_io_gmud_id) (rate(cosmotech_worker_messages_total[5m]))",
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -57,7 +57,7 @@
     {
       "id": 2,
       "type": "timeseries",
-      "title": "Processing P95",
+      "title": "Processamento p95",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -71,13 +71,13 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "histogram_quantile(0.95, sum by (le,version,channel) (rate(cosmotech_worker_processing_seconds_bucket[5m])))",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "expr": "histogram_quantile(0.95, sum by (le,version,channel,cosmotech_io_gmud_id) (rate(cosmotech_worker_processing_seconds_bucket[5m])))",
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -85,7 +85,7 @@
     {
       "id": 3,
       "type": "timeseries",
-      "title": "Retries by release",
+      "title": "Retries por versão",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -99,13 +99,13 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by(version,channel)(rate(cosmotech_worker_retries_total[5m]))",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "expr": "sum by(version,channel,cosmotech_io_gmud_id)(rate(cosmotech_worker_retries_total[5m]))",
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -113,7 +113,7 @@
     {
       "id": 4,
       "type": "timeseries",
-      "title": "DynamoDB errors",
+      "title": "Erros DynamoDB",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -127,13 +127,13 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by(version,channel)(increase(cosmotech_worker_dynamodb_errors_total[5m]))",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "expr": "sum by(version,channel,cosmotech_io_gmud_id)(increase(cosmotech_worker_dynamodb_errors_total[5m]))",
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -141,7 +141,7 @@
     {
       "id": 5,
       "type": "timeseries",
-      "title": "In-flight and drain",
+      "title": "Em processamento e drenagem",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -156,12 +156,12 @@
         {
           "refId": "A",
           "expr": "cosmotech_worker_inflight or cosmotech_worker_draining",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -169,7 +169,7 @@
     {
       "id": 6,
       "type": "timeseries",
-      "title": "Queue visible",
+      "title": "Fila: mensagens visíveis",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -184,12 +184,12 @@
         {
           "refId": "A",
           "expr": "cosmotech_sqs_visible",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -197,7 +197,7 @@
     {
       "id": 7,
       "type": "timeseries",
-      "title": "Oldest message age",
+      "title": "Idade da mensagem mais antiga",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -212,12 +212,12 @@
         {
           "refId": "A",
           "expr": "cosmotech_sqs_oldest_age_seconds",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -225,7 +225,7 @@
     {
       "id": 8,
       "type": "timeseries",
-      "title": "DLQ visible",
+      "title": "DLQ: mensagens visíveis",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -240,12 +240,12 @@
         {
           "refId": "A",
           "expr": "cosmotech_sqs_dlq_visible",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -253,7 +253,7 @@
     {
       "id": 9,
       "type": "timeseries",
-      "title": "Queue data freshness",
+      "title": "Atualidade dos dados SQS",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -268,12 +268,12 @@
         {
           "refId": "A",
           "expr": "time() - cosmotech_sqs_data_timestamp_seconds",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -281,7 +281,7 @@
     {
       "id": 10,
       "type": "timeseries",
-      "title": "Samples per window",
+      "title": "Amostras por janela",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -295,13 +295,13 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by(version,channel)(increase(cosmotech_worker_processing_seconds_count[5m]))",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "expr": "sum by(version,channel,cosmotech_io_gmud_id)(increase(cosmotech_worker_processing_seconds_count[5m]))",
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -309,7 +309,7 @@
     {
       "id": 11,
       "type": "timeseries",
-      "title": "Worker scrape availability",
+      "title": "Disponibilidade do scrape Worker",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -324,12 +324,12 @@
         {
           "refId": "A",
           "expr": "up{namespace=\"orders-worker\"}",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }
@@ -337,7 +337,7 @@
     {
       "id": 12,
       "type": "timeseries",
-      "title": "SQS collector health",
+      "title": "Estado do coletor SQS",
       "datasource": {
         "type": "prometheus",
         "uid": "${prometheus}"
@@ -352,12 +352,12 @@
         {
           "refId": "A",
           "expr": "cosmotech_sqs_collection_success",
-          "legendFormat": "{{channel}} {{version}} {{result}}"
+          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "noValue": "NO DATA \u2014 progression must block"
+          "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
       }

@@ -1,3 +1,13 @@
+# RCL e Canary — evidência integrada06/11/2026
+
+PodMonitor atualizado para propagar cosmotech.io/gmud-id em métricas. Dashboard uid orders-worker-canary instalado no Grafana por API e lido de volta:12 painéis pt-BR, legenda RCL/versão/canal. Credenciais existentes só em memória, sem logs. Scripts/install_worker_canary_dashboard.py reutiliza Secret existente e preserva backup privado de dashboard anterior.
+
+RCL000001/GLPI5 foi abortado por métricas iniciais insuficientes e drenou a candidata, mantendo stable. RCL000003/GLPI7 aprovou automaticamente, passou1→2 consumidores e promoveu Worker1.0.2, drenando candidata a0. Observação12h aberta até22:04:27Z06/11. API RCL000002/GLPI6 aguarda humano. Gate lê SQS/CW diretamente; painéis do exporter SQS ainda podem estar SEM DADOS e não foram declarados integrados.
+
+800 pedidos sintéticos aceitos; três amostras consultadas pela API estavam COMPLETED. Pagamento SIMULATED_CAPTURED é simulação da aplicação, sem provedor externo real. CI/SQS/DynamoDB/métricas/efeitos GitOps são reais. Evidência consolidada: showcase10/14 e assets/rcl-live-evidence.json do laboratório.
+
+## Registro anterior preservado
+
 # Observabilidade Worker — estado vigente06/11/2026
 
 PodMonitor worker-canary aplicado. A nova imagem instrumentada ainda aguarda revisão humana da GMUD4; não há candidata ou dados versionados integrados validados. Dashboard12 painéis preparado localmente, não importado. Coletor SQS tem testes com cliente mockado; não enviou dados nem foi ativado como serviço.
