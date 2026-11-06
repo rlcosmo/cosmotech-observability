@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: orders-worker-release-metrics
+  namespace: observability
+  labels:
+    release: prometheus
+spec:
+  namespaceSelector:
+    matchNames: [orders-worker]
+  selector:
+    matchLabels:
+      cosmotech.io/component: orders-worker
+  podMetricsEndpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s

@@ -1,0 +1,366 @@
+{
+  "uid": "orders-worker-canary",
+  "title": "CosmoTech | Worker stable / canary",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": [
+    "cosmotech",
+    "worker",
+    "canary"
+  ],
+  "timezone": "browser",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "refresh": "15s",
+  "description": "Prepared dashboard; runtime queries must be validated after authorized deployment. No data is not zero.",
+  "templating": {
+    "list": [
+      {
+        "name": "prometheus",
+        "type": "datasource",
+        "query": "prometheus",
+        "label": "Prometheus"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Messages by release",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (version,channel,result) (rate(cosmotech_worker_messages_total[5m]))",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Processing P95",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "histogram_quantile(0.95, sum by (le,version,channel) (rate(cosmotech_worker_processing_seconds_bucket[5m])))",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Retries by release",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by(version,channel)(rate(cosmotech_worker_retries_total[5m]))",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "DynamoDB errors",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by(version,channel)(increase(cosmotech_worker_dynamodb_errors_total[5m]))",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "In-flight and drain",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_worker_inflight or cosmotech_worker_draining",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Queue visible",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_sqs_visible",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Oldest message age",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_sqs_oldest_age_seconds",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "DLQ visible",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_sqs_dlq_visible",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 9,
+      "type": "timeseries",
+      "title": "Queue data freshness",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "time() - cosmotech_sqs_data_timestamp_seconds",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Samples per window",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 32,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by(version,channel)(increase(cosmotech_worker_processing_seconds_count[5m]))",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Worker scrape availability",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "up{namespace=\"orders-worker\"}",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "SQS collector health",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 40,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_sqs_collection_success",
+          "legendFormat": "{{channel}} {{version}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NO DATA \u2014 progression must block"
+        },
+        "overrides": []
+      }
+    }
+  ]
+}
