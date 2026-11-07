@@ -91,3 +91,17 @@ def test_zabbix_failed_api_cannot_be_rendered_as_zero(monkeypatch):
 def test_command_center_rejects_write_api_calls():
     with pytest.raises(ValueError, match='read-only'):
         monitoring.zabbix_request('private', 'event.acknowledge', {})
+
+
+def test_sqs_collector_uses_only_cloudwatch_and_correct_dimensions(monkeypatch):
+    import datetime as dt
+    calls = []
+    def aws(service, operation, *args):
+        calls.append((service, operation, args))
+        statistic = args[args.index("--statistics") + 1]
+        return {"Datapoints": [{"Timestamp": (dt.datetime.now(dt.timezone.utc) - dt.timedelta(seconds=60)).isoformat(), statistic: 0}]}
+    monkeypatch.setattr(monitoring, "aws", aws)
+    result = monitoring.collect_sqs()
+    assert "cosmotech_sqs_collection_success 1" in result
+    assert all(service == "cloudwatch" and operation == "get-metric-statistics" for service, operation, _ in calls)
+    assert len(calls) == 8

@@ -14,10 +14,15 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pytest tests/test_lab_monitoring.py tests/test_codex_quota.py tests/test_zabbix_monitoring.py -q
+      - run: python -m pytest tests/test_lab_monitoring.py tests/test_codex_quota.py tests/test_zabbix_monitoring.py tests/test_sqs_canary_metrics.py -q
       - run: python -m compileall -q src scripts ops/zabbix ops/zabbix-monitoring
       - run: bash -n scripts/install_lab_monitoring.sh ops/zabbix/install.sh
       - run: python scripts/build_lab_dashboards.py
       - run: python scripts/build_connectivity_dashboard.py
       - run: python scripts/build_command_center_dashboard.py
+      - run: python scripts/build_sqs_worker_dashboard.py
+      - name: Validate PromQL and alert firing/recovery
+        run: |
+          docker run --rm --entrypoint /bin/promtool -v "$PWD:/work" -w /work prom/prometheus:v3.5.0 check rules ops/monitoring/v2-sqs-worker-rules.json
+          docker run --rm --entrypoint /bin/promtool -v "$PWD:/work" -w /work prom/prometheus:v3.5.0 test rules tests/fixtures/v2-sqs-alert-tests.json
       - run: git diff --exit-code -- ops/grafana/dashboards
