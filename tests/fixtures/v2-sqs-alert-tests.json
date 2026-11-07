@@ -1,6 +1,6 @@
 {
   "rule_files": [
-    "ops/monitoring/v2-sqs-worker-rules.json"
+    "../../ops/monitoring/v2-sqs-worker-rules.json"
   ],
   "evaluation_interval": "1m",
   "tests": [
