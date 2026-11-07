@@ -51,3 +51,24 @@ def test_invalid_samples_and_permission_failure_are_not_zero():
     def denied(**query):
         raise RuntimeError("Denied")
     assert module.collect(denied, "q", "dlq", now) == "cosmotech_sqs_collection_success 0\n"
+
+
+def test_idle_dlq_uses_actual_metadata_instead_of_inventing_zero():
+    now = datetime(2026, 11, 7, tzinfo=UTC)
+    def call(**query):
+        if query["Dimensions"][0]["Value"] == "dlq":
+            return {}
+        statistic = query["Statistics"][0]
+        return {"Datapoints": [{"Timestamp": now, statistic: 0}]}
+    for count in ("0", "3"):
+        text = module.collect(call, "q", "dlq", now,
+                              queue_attributes=lambda name: {"Attributes": {"ApproximateNumberOfMessages": count}})
+        assert f"cosmotech_sqs_dlq_visible {count}" in text
+        assert "cosmotech_sqs_dlq_attribute_fallback 1" in text
+    assert module.collect(call, "q", "dlq", now) == "cosmotech_sqs_collection_success 0\n"
+    def denied(name):
+        raise RuntimeError("Denied")
+    assert module.collect(call, "q", "dlq", now, queue_attributes=denied) == "cosmotech_sqs_collection_success 0\n"
+    for count in ("-1", "not-a-count", True):
+        assert module.collect(call, "q", "dlq", now,
+                              queue_attributes=lambda name: {"Attributes": {"ApproximateNumberOfMessages": count}}) == "cosmotech_sqs_collection_success 0\n"

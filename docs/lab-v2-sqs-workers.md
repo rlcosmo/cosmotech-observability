@@ -21,3 +21,11 @@ Custos novos provisionados: nenhum. Após ativação, são oito chamadas GetMetr
 CI aprovado no commit babf8c3: https://github.com/rlcosmo/cosmotech-observability/actions/runs/42367303704. Promtool confirmou oito regras e os cenários de DLQ/freshness/ausência/falhas. O teste detectou uma duplicação de alertas por labels; corrigida por agregação antes do aceite.
 
 Dashboard adicional `cosmotech-v2-dr-readiness` preparado com disponibilidade por região, RTO, RPO e indisponibilidade em andamento. Depende de probes/exportador ainda não implantados. Não usar este dashboard como evidência de DR operacional.
+
+## Validação real após autorização de merge
+
+PR #1 mesclado no commit c877930; CI main aprovado em https://github.com/rlcosmo/cosmotech-observability/actions/runs/42367875838. A role de manutenção existente foi assumida via STS por 900 segundos, mantendo credenciais apenas em memória. CloudWatch respondeu com amostras recentes para backlog, in-flight e idade da fila EKS de origem, todos zero na observação de 07/11/2026 às 11:21 UTC. A DLQ não retornou datapoints; ausência não comprova fila vazia.
+
+Correção derivada dessa evidência: quando apenas a contagem DLQ não tem datapoints, ler a contagem aproximada real por GetQueueAttributes com o grant ITSM já declarado. Não inferir zero, consumir mensagens ou criar grants. Se a leitura metadata falhar, a coleta continua inválida. A métrica cosmotech_sqs_dlq_attribute_fallback identifica a fonte alternativa. A fila principal ainda exige gauges CloudWatch válidos. Foram adicionados testes para DLQ vazia/não vazia, negação e atributos inválidos.
+
+A sessão de manutenção acessou pods de observabilidade, mas recebeu Forbidden para PodMonitor, PrometheusRule e ConfigMap. Não foi ampliado RBAC ou usado outro principal para contornar esse controle. Publicação dos manifests/dashboard e execução SSM do coletor dependem do executor canônico com essas permissões; merge de código não equivale a implantação.
