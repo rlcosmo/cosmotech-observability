@@ -105,3 +105,17 @@ def test_sqs_collector_uses_only_cloudwatch_and_correct_dimensions(monkeypatch):
     assert "cosmotech_sqs_collection_success 1" in result
     assert all(service == "cloudwatch" and operation == "get-metric-statistics" for service, operation, _ in calls)
     assert len(calls) == 8
+
+
+def test_failed_sqs_retries_within_freshness_window_and_keeps_measured_samples(tmp_path):
+    import json
+    names = ['costs', 'credits', 'servers', 'inventory', 'web', 'application_hosts', 'codex', 'zabbix']
+    cache = {name: {'ok': 1, 'attempt': 10000, 'samples': []} for name in names}
+    cache['sqs'] = {'ok': 0, 'attempt': 9939, 'samples': ['cosmotech_sqs_visible 9']}
+    (tmp_path / 'cache.json').write_text(json.dumps(cache))
+    with patch.object(monitoring, 'STATE_DIR', tmp_path), patch.object(monitoring.time, 'time', return_value=10000), patch.object(monitoring, 'collect_sqs', return_value=['cosmotech_sqs_visible 4']) as collect:
+        monitoring.collect()
+    collect.assert_called_once()
+    result = json.loads((tmp_path / 'cache.json').read_text())
+    assert result['sqs']['ok'] == 1
+    assert result['sqs']['samples'] == ['cosmotech_sqs_visible 4']
