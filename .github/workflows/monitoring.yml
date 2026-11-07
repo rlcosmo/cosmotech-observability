@@ -23,6 +23,6 @@ jobs:
       - run: python scripts/build_sqs_worker_dashboard.py
       - name: Validate PromQL and alert firing/recovery
         run: |
-          docker run --rm --entrypoint /bin/promtool -v "$PWD:/work" -w /work prom/prometheus:v3.5.0 check rules ops/monitoring/v2-sqs-worker-rules.json
-          docker run --rm --entrypoint /bin/promtool -v "$PWD:/work" -w /work prom/prometheus:v3.5.0 test rules tests/fixtures/v2-sqs-alert-tests.json
+          docker run --rm --entrypoint /bin/promtool -v "$PWD:/work" -w /work prom/prometheus:v3.5.0@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996 check rules ops/monitoring/v2-sqs-worker-rules.json
+          docker run --rm --entrypoint /bin/promtool -v "$PWD:/work" -w /work prom/prometheus:v3.5.0@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996 test rules tests/fixtures/v2-sqs-alert-tests.json
       - run: git diff --exit-code -- ops/grafana/dashboards

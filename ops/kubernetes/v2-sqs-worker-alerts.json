@@ -15,7 +15,7 @@
         "rules": [
           {
             "alert": "CosmoTechSQSEvidenceUnavailable",
-            "expr": "lab_collection_success{group=\"sqs\"} == 0 or absent(lab_collection_success{group=\"sqs\"}) or time() - cosmotech_sqs_data_timestamp_seconds > 180 or absent(cosmotech_sqs_data_timestamp_seconds)",
+            "expr": "max(lab_collection_success{group=\"sqs\"} == 0 or absent(lab_collection_success{group=\"sqs\"}) or time() - cosmotech_sqs_data_timestamp_seconds > 180 or absent(cosmotech_sqs_data_timestamp_seconds))",
             "for": "5m",
             "labels": {
               "severity": "warning",

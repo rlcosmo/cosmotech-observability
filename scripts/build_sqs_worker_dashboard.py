@@ -55,7 +55,7 @@ write("ops/kubernetes/v2-sqs-dashboard.json", {
 fresh = " and on() (time() - cosmotech_sqs_data_timestamp_seconds < 180)"
 alerts = []
 for name, expression, duration, severity, summary in [
-    ("CosmoTechSQSEvidenceUnavailable", 'lab_collection_success{group="sqs"} == 0 or absent(lab_collection_success{group="sqs"}) or time() - cosmotech_sqs_data_timestamp_seconds > 180 or absent(cosmotech_sqs_data_timestamp_seconds)', "5m", "warning", "Coleta SQS ausente, falhou ou está desatualizada"),
+    ("CosmoTechSQSEvidenceUnavailable", 'max(lab_collection_success{group="sqs"} == 0 or absent(lab_collection_success{group="sqs"}) or time() - cosmotech_sqs_data_timestamp_seconds > 180 or absent(cosmotech_sqs_data_timestamp_seconds))', "5m", "warning", "Coleta SQS ausente, falhou ou está desatualizada"),
     ("CosmoTechSQSBacklog", "cosmotech_sqs_visible > 100" + fresh, "10m", "warning", "Backlog SQS acima de 100 mensagens"),
     ("CosmoTechSQSOldMessages", "cosmotech_sqs_oldest_age_seconds > 180" + fresh, "5m", "warning", "Mensagem mais antiga excede 180 segundos"),
     ("CosmoTechSQSDLQ", "cosmotech_sqs_dlq_visible > 0" + fresh, "2m", "critical", "DLQ contém mensagens; preservar dados e investigar"),
