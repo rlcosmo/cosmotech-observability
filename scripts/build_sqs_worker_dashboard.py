@@ -74,3 +74,26 @@ write("ops/kubernetes/v2-sqs-worker-alerts.json", {
     "apiVersion": "monitoring.coreos.com/v1", "kind": "PrometheusRule",
     "metadata": {"name": "cosmotech-v2-sqs-workers", "namespace": "observability", "labels": {"release": "prometheus"}},
     "spec": {"groups": groups}})
+
+# Readiness only: these series must be supplied by verified recovery probes.
+# Do not invent uptime/RTO/RPO for a region that has not been provisioned.
+dr_panels = []
+for title, expr, unit in [
+    ("Disponibilidade ponta a ponta por região", 'max by(region)(probe_success{job="orders-dr-e2e"})', "percentunit"),
+    ("RTO observado · última recuperação validada", "cosmotech_dr_rto_seconds", "s"),
+    ("RPO observado · último aceite durável", "cosmotech_dr_rpo_seconds", "s"),
+    ("Indisponibilidade em andamento", 'clamp_min(time() - cosmotech_dr_outage_started_timestamp_seconds, 0) and on(region) (max by(region)(probe_success{job="orders-dr-e2e"}) == 0)', "s"),
+]:
+    index = len(dr_panels)
+    dr_panels.append({"id": index + 1, "type": "timeseries", "title": title,
+                      "description": "Preparação: sem probe/exportador validado, estado desconhecido. Não comprova recuperação real.",
+                      "gridPos": {"x": (index % 2) * 12, "y": (index // 2) * 8, "w": 12, "h": 8},
+                      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+                      "targets": [{"refId": "A", "expr": expr, "legendFormat": "{{region}}"}],
+                      "fieldConfig": {"defaults": {"unit": unit}, "overrides": []}})
+write("ops/grafana/dashboards/v2-dr-readiness.json", {
+    "uid": "cosmotech-v2-dr-readiness", "title": "CosmoTech · V2 DR · Preparação",
+    "schemaVersion": 39, "version": 1, "tags": ["cosmotech", "v2", "dr", "preparacao"],
+    "refresh": "15s", "time": {"from": "now-6h", "to": "now"},
+    "templating": {"list": [{"name": "datasource", "type": "datasource", "query": "prometheus"}]},
+    "panels": dr_panels})

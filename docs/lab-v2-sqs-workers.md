@@ -15,3 +15,9 @@ Para DLQ: investigar logs e correlação, preservar mensagens, corrigir causa vi
 Testes locais: 26 testes pytest aprovados, incluindo collector integrado, permissões negadas, dados inválidos/stale e contadores esparsos; bash e compilação Python aprovados. PromQL e testes de firing/recovery executados no CI com promtool. Importação/queries reais, scrape e entrega de notificações seguem pendentes até execução autorizada com role e pipeline. Não declarar operação real a partir de JSON válido.
 
 Custos novos provisionados: nenhum. Após ativação, são oito chamadas GetMetricStatistics por minuto, além das séries no Prometheus e uso de CI; estimar pela tarifa/quota vigente. Não são oito chamadas gratuitas garantidas.
+
+## Evidência CI e preparação DR
+
+CI aprovado no commit babf8c3: https://github.com/rlcosmo/cosmotech-observability/actions/runs/42367303704. Promtool confirmou oito regras e os cenários de DLQ/freshness/ausência/falhas. O teste detectou uma duplicação de alertas por labels; corrigida por agregação antes do aceite.
+
+Dashboard adicional `cosmotech-v2-dr-readiness` preparado com disponibilidade por região, RTO, RPO e indisponibilidade em andamento. Depende de probes/exportador ainda não implantados. Não usar este dashboard como evidência de DR operacional.

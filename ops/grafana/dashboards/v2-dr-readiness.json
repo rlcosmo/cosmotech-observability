@@ -1,0 +1,144 @@
+{
+  "uid": "cosmotech-v2-dr-readiness",
+  "title": "CosmoTech · V2 DR · Preparação",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": [
+    "cosmotech",
+    "v2",
+    "dr",
+    "preparacao"
+  ],
+  "refresh": "15s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Disponibilidade ponta a ponta por região",
+      "description": "Preparação: sem probe/exportador validado, estado desconhecido. Não comprova recuperação real.",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "max by(region)(probe_success{job=\"orders-dr-e2e\"})",
+          "legendFormat": "{{region}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "RTO observado · última recuperação validada",
+      "description": "Preparação: sem probe/exportador validado, estado desconhecido. Não comprova recuperação real.",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_dr_rto_seconds",
+          "legendFormat": "{{region}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "RPO observado · último aceite durável",
+      "description": "Preparação: sem probe/exportador validado, estado desconhecido. Não comprova recuperação real.",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "cosmotech_dr_rpo_seconds",
+          "legendFormat": "{{region}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Indisponibilidade em andamento",
+      "description": "Preparação: sem probe/exportador validado, estado desconhecido. Não comprova recuperação real.",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "clamp_min(time() - cosmotech_dr_outage_started_timestamp_seconds, 0) and on(region) (max by(region)(probe_success{job=\"orders-dr-e2e\"}) == 0)",
+          "legendFormat": "{{region}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      }
+    }
+  ]
+}
