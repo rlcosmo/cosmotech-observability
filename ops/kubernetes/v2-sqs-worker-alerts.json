@@ -1,0 +1,124 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "PrometheusRule",
+  "metadata": {
+    "name": "cosmotech-v2-sqs-workers",
+    "namespace": "observability",
+    "labels": {
+      "release": "prometheus"
+    }
+  },
+  "spec": {
+    "groups": [
+      {
+        "name": "cosmotech.v2.sqs-workers",
+        "rules": [
+          {
+            "alert": "CosmoTechSQSEvidenceUnavailable",
+            "expr": "max(lab_collection_success{group=\"sqs\"} == 0 or absent(lab_collection_success{group=\"sqs\"}) or time() - cosmotech_sqs_data_timestamp_seconds > 180 or absent(cosmotech_sqs_data_timestamp_seconds))",
+            "for": "5m",
+            "labels": {
+              "severity": "warning",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "Coleta SQS ausente, falhou ou está desatualizada",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechSQSBacklog",
+            "expr": "cosmotech_sqs_visible > 100 and on() (time() - cosmotech_sqs_data_timestamp_seconds < 180)",
+            "for": "10m",
+            "labels": {
+              "severity": "warning",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "Backlog SQS acima de 100 mensagens",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechSQSOldMessages",
+            "expr": "cosmotech_sqs_oldest_age_seconds > 180 and on() (time() - cosmotech_sqs_data_timestamp_seconds < 180)",
+            "for": "5m",
+            "labels": {
+              "severity": "warning",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "Mensagem mais antiga excede 180 segundos",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechSQSDLQ",
+            "expr": "cosmotech_sqs_dlq_visible > 0 and on() (time() - cosmotech_sqs_data_timestamp_seconds < 180)",
+            "for": "2m",
+            "labels": {
+              "severity": "critical",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "DLQ contém mensagens; preservar dados e investigar",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechWorkerFailures",
+            "expr": "sum(increase(cosmotech_worker_messages_total{result=~\"error|ack_error\"}[5m])) > 0",
+            "for": "2m",
+            "labels": {
+              "severity": "warning",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "Worker apresentou falhas de processamento ou ACK",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechWorkerRetries",
+            "expr": "sum(increase(cosmotech_worker_retries_total[5m])) > 10",
+            "for": "5m",
+            "labels": {
+              "severity": "warning",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "Worker apresentou mais de dez retries em cinco minutos",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechWorkerSlow",
+            "expr": "(histogram_quantile(0.95, sum by (le,channel) (rate(cosmotech_worker_processing_seconds_bucket[5m]))) > 30) and on(channel) (sum by(channel)(increase(cosmotech_worker_processing_seconds_count[5m])) >= 20)",
+            "for": "5m",
+            "labels": {
+              "severity": "warning",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "P95 de processamento acima de 30s, com amostragem mínima",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          },
+          {
+            "alert": "CosmoTechWorkerScrapeUnavailable",
+            "expr": "max(up{namespace=\"orders-worker\"}) == 0 or absent(up{namespace=\"orders-worker\"})",
+            "for": "5m",
+            "labels": {
+              "severity": "critical",
+              "team": "cosmotech"
+            },
+            "annotations": {
+              "summary": "Métricas dos Workers indisponíveis",
+              "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

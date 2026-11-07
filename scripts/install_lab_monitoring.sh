@@ -2,6 +2,7 @@
 set -Eeuo pipefail
 source_dir="${1:?staged source directory required}"
 install -d -m 0755 /opt/cosmotech/monitoring /var/lib/cosmotech-monitoring /etc/nginx/snippets
+install -m 0644 "$source_dir/sqs_canary_metrics.py" /opt/cosmotech/monitoring/sqs_canary_metrics.py
 install -m 0644 "$source_dir/lab_monitoring.py" /opt/cosmotech/monitoring/lab_monitoring.py
 install -m 0644 "$source_dir/cosmotech-monitoring.service" /etc/systemd/system/
 install -m 0644 "$source_dir/cosmotech-monitoring.timer" /etc/systemd/system/

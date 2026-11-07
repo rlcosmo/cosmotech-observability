@@ -1,0 +1,117 @@
+{
+  "rule_files": [
+    "../../ops/monitoring/v2-sqs-worker-rules.json"
+  ],
+  "evaluation_interval": "1m",
+  "tests": [
+    {
+      "name": "DLQ fires and recovers only with fresh evidence",
+      "interval": "1m",
+      "input_series": [
+        {
+          "series": "cosmotech_sqs_dlq_visible",
+          "values": "1 1 1 0 0 0"
+        },
+        {
+          "series": "cosmotech_sqs_data_timestamp_seconds",
+          "values": "0+60x10"
+        }
+      ],
+      "alert_rule_test": [
+        {
+          "eval_time": "2m",
+          "alertname": "CosmoTechSQSDLQ",
+          "exp_alerts": [
+            {
+              "exp_labels": {
+                "severity": "critical",
+                "team": "cosmotech"
+              },
+              "exp_annotations": {
+                "summary": "DLQ cont\u00e9m mensagens; preservar dados e investigar",
+                "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+              }
+            }
+          ]
+        },
+        {
+          "eval_time": "4m",
+          "alertname": "CosmoTechSQSDLQ",
+          "exp_alerts": []
+        }
+      ]
+    },
+    {
+      "name": "Stale DLQ cannot masquerade as current",
+      "interval": "1m",
+      "input_series": [
+        {
+          "series": "cosmotech_sqs_dlq_visible",
+          "values": "1+0x10"
+        },
+        {
+          "series": "cosmotech_sqs_data_timestamp_seconds",
+          "values": "0+0x10"
+        }
+      ],
+      "alert_rule_test": [
+        {
+          "eval_time": "4m",
+          "alertname": "CosmoTechSQSDLQ",
+          "exp_alerts": []
+        }
+      ]
+    },
+    {
+      "name": "Missing collection produces evidence alert",
+      "interval": "1m",
+      "input_series": [],
+      "alert_rule_test": [
+        {
+          "eval_time": "6m",
+          "alertname": "CosmoTechSQSEvidenceUnavailable",
+          "exp_alerts": [
+            {
+              "exp_labels": {
+                "severity": "warning",
+                "team": "cosmotech"
+              },
+              "exp_annotations": {
+                "summary": "Coleta SQS ausente, falhou ou est\u00e1 desatualizada",
+                "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Processing failures trigger independently of backlog",
+      "interval": "1m",
+      "input_series": [
+        {
+          "series": "cosmotech_worker_messages_total{result=\"error\"}",
+          "values": "0+1x10"
+        }
+      ],
+      "alert_rule_test": [
+        {
+          "eval_time": "4m",
+          "alertname": "CosmoTechWorkerFailures",
+          "exp_alerts": [
+            {
+              "exp_labels": {
+                "severity": "warning",
+                "team": "cosmotech"
+              },
+              "exp_annotations": {
+                "summary": "Worker apresentou falhas de processamento ou ACK",
+                "runbook_url": "https://github.com/rlcosmo/cosmotech-observability/blob/main/docs/lab-v2-sqs-workers.md"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
