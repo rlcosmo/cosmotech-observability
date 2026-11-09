@@ -155,8 +155,13 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "cosmotech_worker_inflight or cosmotech_worker_draining",
-          "legendFormat": "{{cosmotech_io_gmud_id}} · {{channel}} · {{version}} · {{result}}"
+          "expr": "cosmotech_worker_inflight",
+          "legendFormat": "em processamento · {{cosmotech_io_gmud_id}} · {{channel}}"
+        },
+        {
+          "refId": "B",
+          "expr": "cosmotech_worker_draining",
+          "legendFormat": "drenagem · {{cosmotech_io_gmud_id}} · {{channel}}"
         }
       ],
       "fieldConfig": {
@@ -164,7 +169,8 @@
           "noValue": "SEM DADOS — progressão bloqueada"
         },
         "overrides": []
-      }
+      },
+      "description": "Two independent gauges. PromQL OR would mask draining when both gauges share the same label set."
     },
     {
       "id": 6,

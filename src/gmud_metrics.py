@@ -85,7 +85,7 @@ def render(records,now):
     out.append(sample('cosmotech_gmud_pending_24h',p['pending']))
     for name,values in [('approval',p['approval_durations']),('deployment',p['deployment_durations'])]:
         out+=[sample('cosmotech_gmud_'+name+'_seconds_sum_24h',sum(values)),sample('cosmotech_gmud_'+name+'_count_24h',len(values))]
-    for i in range(24):
+    for i in range(25):
         hour=int(now//3600)*3600-i*3600
         out.append(sample('cosmotech_gmud_created_hourly',p['hourly'][hour],hour=datetime.fromtimestamp(hour,timezone.utc).isoformat()))
     for row in p['rows']:out.append(sample('cosmotech_gmud_change_info',1,**row))

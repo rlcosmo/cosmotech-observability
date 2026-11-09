@@ -31,3 +31,34 @@ The authenticated audit records dashboard UID, folder, panel ID, datasource, ori
 Zero requires returned finite zero samples, or separate proof that an event/sample count is zero. Empty series are not automatically legitimate absence. Rows/text are tracked separately and excluded from real-data totals. Missing MacOS/etcd/mesh exporters are telemetry/dependency findings, not invitations to install infrastructure or delete panels. Current selected variables and historical range observations must be distinguished; an empty first namespace is not proof that a query is broken.
 
 Raw inventory, query results and authenticated captures are private working artifacts under `/tmp/v2-005-006/`. Sanitized per-panel results and operational evidence are published under `docs/evidence/` after final validation. Credentials, session cookies, raw signed envelopes and private IPs are excluded from Git artifacts.
+
+## Proven corrections prepared after query evidence
+
+1. Grafana Overview, UID `6be0s85Mk`, panel 6: `grafana_alerting_result_total` is absent on the restored Grafana 13.3. Actual `grafana_alerting_alerts{state="alerting"}` is exposed and returns a real zero gauge. The override preserves existing filters and changes only the proven obsolete metric.
+2. Canary, UID `orders-worker-canary`, panel 5: `cosmotech_worker_inflight or cosmotech_worker_draining` coalesces equal label sets and masks the draining series. Two independent targets preserve both real gauges. No Worker instrumentation or deployment changes.
+3. Observability tools, UID `observability-tools-lab`, explanatory panel: the old 24h Prometheus retention statement is inconsistent with the restored 30d/8GB configuration. Text is corrected; histories and retention settings are not changed.
+
+No standard dashboard is deleted. Empty namespace selections, EKS-managed unavailable component metrics, absent macOS exporters, idle Worker quantiles and expired quota observations remain explicit findings. Existing valid queries are not changed to force values. A full last-24h range was queried with a bounded one-hour evaluation step; short bursts between samples may not be visible in this audit. Raw-query and per-target evidence remains private.
+
+## Operational interruption — 2026-11-09
+
+Observability PR #7 merged as `8d0dc0b186e8ce963f227f7ee3cc7fc273b311d9`, after CI run `42654492901` passed. The observer install command `be62d75e-3717-483c-9c42-f666cde27319` was submitted before interruption; its terminal result is **unconfirmed**. Do not replay installation blindly. First inspect the SSM result, installed file hashes, systemd status and `/gmud-metrics` after access returns.
+
+On resumption, AWS API returned invalid credentials, the existing login profile failed renewal, and both EKS and Grafana timed out. An explicitly authorized `aws login --profile serverless-lab --remote` then reached a sign-in page reporting **account suspended**. The login command was cancelled. Billing/nonpayment is only one possibility mentioned by the page; the suspension cause has not been established. No restriction workaround, billing action or repeated login attempt was performed.
+
+V2-005 and V2-006 are **not operationally accepted**. The previous healthy baseline is dated evidence, not a claim of present service health. GitOps changes are prepared in a draft PR and must not be merged while automatic sync and operational validation cannot be verified. Repositories contain complete reviewable sources and passing offline tests, but offline fixtures do not prove an operational dashboard or an operational data collector.
+
+## Resume after AWS reactivation
+
+1. Confirm account access and live services without changing nodes/storage/Power Manager/DR.
+2. Read the existing installation command result before deciding whether any repair is needed. Verify native GLPI counts and timestamps again; do not reuse the baseline zero as current truth.
+3. Validate observer collection success, HTTP private endpoint and Prometheus scrape. Add only the reviewed ServiceMonitor endpoint.
+4. Merge the reviewed GitOps PR after CI passes and the operational prerequisites are verified. Check Argo `Synced/Healthy`, actual ConfigMap adoption and dashboard UID count (37 original plus one GMUD overview).
+5. Re-run the authenticated full per-panel audit and compare classifications, keeping data gaps explicit. Check all datasources, authenticated HTTPS login, source event counts, Zabbix events, and regression health. Capture actual updated dashboards; no screenshot mockups.
+6. Replace the interruption status with final operational evidence only after these checks pass. Periodic backup coverage for the new recovery claims is an existing separate dependency; this task never changes volumes or backup selections.
+
+## Audit counts at the dated baseline (not final operational acceptance)
+
+37 dashboards, 461 panels: 420 query panels and 41 structural/text panels. After correlating query results with source/version evidence, query-panel classifications are 253 OK with nonzero real samples, 39 ZERO LEGÍTIMO with real zero samples, 113 SEM TELEMETRIA, 13 BLOQUEADO (managed etcd endpoint absent), and 2 ERRO with proven corrections prepared. Structural panels add 40 OK and one erroneous retention statement. Total including structural panels: 293 OK, 39 ZERO LEGÍTIMO, 113 SEM TELEMETRIA, 13 BLOQUEADO, 3 ERRO.
+
+These classifications deliberately leave uncertain absences unresolved. They are not 113 confirmed broken dashboards. Idle/undefined quantiles, empty namespace selections, stale quota sources and unavailable exporter families need separate interpretation. None of the prepared corrections is counted as operationally validated while access is suspended. The complete per-panel table is in `docs/evidence/v2-005-006/panel-baseline.json`; variable resolution and the audit summary are adjacent.
