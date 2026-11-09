@@ -19,3 +19,17 @@ The Prometheus override deliberately replaces the main container's /prometheus m
 Tempo prioritizes completed quiesced snapshot snap-0da8501e7373d8447, 2026-11-04 10:29:07 UTC, on a new encrypted 1b volume. Isolated Tempo 3.1.1 became Ready, search returned historical traces, and trace 12764de176cd2b744c5d1c067e45dab1 was retrieved via /api/v2/traces. This recovery point is older than the current original volume: traces after that point are not in this serving copy. Original volume and additional backup snap-0744219066f50fc51 remain preserved for reconciliation; do not claim zero RPO or complete historical consolidation.
 
 Temporary retention is 30d/8GB for metrics and 720h for traces to avoid deleting restored old data at startup. Capacity must be monitored; reverting retention requires a separate review because it expires history. Stop isolated readers/writers before cutover. Tempo's chart has no existingClaim support: persistence.enabled=false suppresses claim templates, while explicit extraVolumes and extraVolumeMounts supply the durable restored PVC. It does NOT mean ephemeral trace storage. Changing the immutable StatefulSet requires orphaning only the controller, terminating its Pending pod, and recreating the controller from the pinned chart. Original PVC/PV remain untouched, and captured controller manifests permit rollback when 1a compute returns.
+
+## Runtime evidence after cutover
+
+- Grafana 3/3 Ready, HTTPS /api/health 200, database ok; authenticated search 200, 37 dashboards.
+- Prometheus 2/2 Ready, API Ready and recent up series; eight SQS/Workers rules health=ok. SQSEvidenceUnavailable may be pending when CloudWatch timestamps exceed its existing 180s condition; the rule is preserved.
+- Tempo 1/1 Ready, HTTPS /ready 200. A synthetic span sent through the live OpenTelemetry Collector OTLP HTTP receiver returned 200 and was retrieved from Tempo by trace ID 439a005004504720b012cc7ffb42d2d2.
+- Prometheus, Loki and Tempo Grafana datasource health returned 200. Alertmanager is a frontend datasource: generic backend health returned plugin.unavailable; its authenticated Grafana proxy /api/v2/status returned 200, version 0.34.2. Do not treat the unsupported backend probe as an Alertmanager outage.
+- Zabbix events 118,119,120,121 have recovery event IDs 163,165,166,164 respectively, all four triggers value=0. No trigger configuration was changed.
+- Argo application observability-v2-sqs-workers is Synced/Healthy at 8fd239b73354e9c186c0a4a6c713590cd0abcc91. It owns dashboard/rules, not Helm workload/storage recovery.
+- Helm releases: prometheus revision 8, tempo revision 3. Both retain pinned chart versions and now include recovery overrides.
+- Two Ready nodes in 1b, zero in 1a; Fleet Requests quota still rejects Auto Scaling launches. No quota workaround or Power Manager change.
+- V2-007 portal had authenticated HTTP 200 but observer unavailable due Lambda:GetFunction AccessDenied; operational completion is not established by observability restoration.
+
+Remaining resource-limit overlays cover Alloy and Alertmanager containers and reloaders. They keep existing reservations and add small explicit requests within available scheduling capacity; limits do not exceed Kyverno maxima. Alloy rolls one pod at a time without surge; Alertmanager keeps its existing 1b PVC. Watch readiness and OOM status after application.
