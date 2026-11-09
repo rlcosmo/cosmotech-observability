@@ -1,0 +1,32 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "ServiceMonitor",
+  "metadata": {
+    "name": "cosmotech-lab-monitoring",
+    "namespace": "observability",
+    "labels": {
+      "release": "prometheus"
+    }
+  },
+  "spec": {
+    "endpoints": [
+      {
+        "interval": "60s",
+        "path": "/lab-metrics",
+        "port": "metrics",
+        "scrapeTimeout": "15s"
+      },
+      {
+        "interval": "60s",
+        "path": "/gmud-metrics",
+        "port": "metrics",
+        "scrapeTimeout": "15s"
+      }
+    ],
+    "selector": {
+      "matchLabels": {
+        "app": "cosmotech-lab-monitoring"
+      }
+    }
+  }
+}
