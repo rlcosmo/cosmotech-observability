@@ -1,0 +1,34 @@
+{
+  "grafana": {
+    "persistence": {
+      "existingClaim": "grafana-p0-1b"
+    },
+    "nodeSelector": {
+      "kubernetes.io/hostname": "ip-10-20-12-52.ec2.internal"
+    },
+    "sidecar": {
+      "resources": {
+        "requests": {
+          "cpu": "10m",
+          "memory": "24Mi"
+        },
+        "limits": {
+          "cpu": "100m",
+          "memory": "192Mi"
+        }
+      }
+    },
+    "initChownData": {
+      "resources": {
+        "requests": {
+          "cpu": "10m",
+          "memory": "24Mi"
+        },
+        "limits": {
+          "cpu": "100m",
+          "memory": "128Mi"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "nodeSelector": {
+          "kubernetes.io/hostname": "ip-10-20-12-52.ec2.internal"
+        },
+        "volumes": [
+          {
+            "name": "storage",
+            "persistentVolumeClaim": {
+              "claimName": "grafana-p0-1b"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "grafana-sc-dashboard",
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "24Mi"
+              },
+              "limits": {
+                "cpu": "100m",
+                "memory": "192Mi"
+              }
+            }
+          },
+          {
+            "name": "grafana-sc-datasources",
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "24Mi"
+              },
+              "limits": {
+                "cpu": "100m",
+                "memory": "192Mi"
+              }
+            }
+          }
+        ],
+        "initContainers": [
+          {
+            "name": "init-chown-data",
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "24Mi"
+              },
+              "limits": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
