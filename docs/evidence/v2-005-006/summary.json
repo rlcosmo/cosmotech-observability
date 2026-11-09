@@ -1,0 +1,69 @@
+{
+  "baseline_observed_at": "2026-11-09T16:13:42.974394+00:00",
+  "status": "blocked_operational_validation_account_suspended",
+  "dashboards": 37,
+  "panels": 461,
+  "structural_panels": 41,
+  "query_panels": 420,
+  "classification_including_structural": {
+    "OK": 293,
+    "SEM TELEMETRIA": 113,
+    "ZERO LEGÍTIMO": 39,
+    "ERRO": 3,
+    "BLOQUEADO": 13
+  },
+  "classification_query_panels_only": {
+    "OK": 253,
+    "SEM TELEMETRIA": 113,
+    "ZERO LEGÍTIMO": 39,
+    "ERRO": 2,
+    "BLOQUEADO": 13
+  },
+  "proven_corrections_prepared": 3,
+  "corrections_operationally_validated": 0,
+  "current_pod_health": "unknown_since_access_interruption",
+  "gmud_baseline": {
+    "native_changes": 15,
+    "signed_governed_changes": 13,
+    "created_last24h": 0,
+    "events_last24h": 0,
+    "current_count": "unknown_until_source_revalidation"
+  },
+  "datasource_baseline": [
+    {
+      "uid": "alertmanager",
+      "name": "Alertmanager",
+      "type": "alertmanager",
+      "status": 200
+    },
+    {
+      "uid": "loki",
+      "name": "Loki",
+      "type": "loki",
+      "status": 200
+    },
+    {
+      "uid": "prometheus",
+      "name": "prometheus-aws-eks-istio-lab-dev",
+      "type": "prometheus",
+      "status": 200
+    },
+    {
+      "uid": "P214B5B846CF3925F",
+      "name": "Tempo",
+      "type": "tempo",
+      "status": 200
+    }
+  ],
+  "installation": {
+    "ssm_command_id": "be62d75e-3717-483c-9c42-f666cde27319",
+    "terminal_result": "unconfirmed_do_not_replay_blindly"
+  },
+  "captures": [
+    {
+      "file": "baseline-canary.png",
+      "kind": "real_authenticated_before_changes",
+      "is_final_deployed_dashboard": false
+    }
+  ]
+}

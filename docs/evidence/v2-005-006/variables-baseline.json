@@ -1,0 +1,1069 @@
+[
+  {
+    "kind": "variables",
+    "dashboard": "alertmanager-overview",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "Prometheus",
+        "resolved": "prometheus",
+        "invalid_current": true
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(alertmanager_alerts, namespace)",
+        "configured": "",
+        "resolved": "observability",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "service",
+        "kind": "query",
+        "query": "label_values(alertmanager_alerts, service)",
+        "configured": "",
+        "resolved": "prometheus-kube-prometheus-alertmanager",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "integration",
+        "kind": "query",
+        "query": "label_values(alertmanager_notifications_total{integration=~\".*\"}, integration)",
+        "configured": "$__all",
+        "resolved": ".*",
+        "options_count": 18,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "applications-connectivity-lab",
+    "variables": []
+  },
+  {
+    "kind": "variables",
+    "dashboard": "aws-account-costs-lab",
+    "variables": []
+  },
+  {
+    "kind": "variables",
+    "dashboard": "vkQ0UHxik",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(coredns_dns_requests_total, cluster)",
+        "configured": "$__all",
+        "resolved": ".*",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "job",
+        "kind": "query",
+        "query": "label_values(coredns_dns_requests_total{cluster=~\".*\"},job)",
+        "configured": "$__all",
+        "resolved": ".*",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(coredns_dns_requests_total{job=~\".*\",cluster=~\".*\"}, instance)",
+        "configured": "$__all",
+        "resolved": ".*",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "command-center",
+    "variables": []
+  },
+  {
+    "kind": "variables",
+    "dashboard": "orders-worker-canary",
+    "variables": [
+      {
+        "name": "prometheus",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "cosmotech-v2-sqs-workers",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "eks-infrastructure-lab",
+    "variables": []
+  },
+  {
+    "kind": "variables",
+    "dashboard": "c2f4e12cdf69feb95caa41a5a1b423d9",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(etcd_server_has_leader{job=~\".*etcd.*\"}, job)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "6be0s85Mk",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "prometheus",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "job",
+        "kind": "query",
+        "query": "label_values(grafana_build_info, job)",
+        "configured": [
+          "$__all"
+        ],
+        "resolved": ".*",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(grafana_build_info, instance)",
+        "configured": "$__all",
+        "resolved": ".*",
+        "options_count": 3,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "istio-service-mesh-lab",
+    "variables": []
+  },
+  {
+    "kind": "variables",
+    "dashboard": "09ec8aa1e996d6ffcd6817bbaff4db1b",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"apiserver\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(up{job=\"apiserver\", cluster=\"\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:443",
+        "options_count": 2,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "b59e6c9f2fcbe2e16d77fc492374cc4f",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "efa86fd1d0c121a26444b636a3f509a8",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "85a562078cdf77779eaa1add43ccec1e",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"\"}, namespace)",
+        "configured": null,
+        "resolved": "cosmotech-recovery",
+        "options_count": 13,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "a87fb0d919ec0ea5f6543124e16c42a5",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"\"}, namespace)",
+        "configured": null,
+        "resolved": "cosmotech-recovery",
+        "options_count": 13,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "type",
+        "kind": "query",
+        "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"\", namespace=\"cosmotech-recovery\", workload=~\".+\"}, workload_type)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "200ac8fdbfbb74b39aff88118e4d1c2c",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "node",
+        "kind": "query",
+        "query": "label_values(kube_node_info{cluster=\"\"}, node)",
+        "configured": null,
+        "resolved": "ip-10-20-11-37.ec2.internal",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "058020e04168bfdea0c52269cb699df2",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "6581e46e4e5c7ba40a07646395ef7b23",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"\"}, namespace)",
+        "configured": null,
+        "resolved": "cosmotech-recovery",
+        "options_count": 13,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "pod",
+        "kind": "query",
+        "query": "label_values(kube_pod_info{job=\"kube-state-metrics\", cluster=\"\", namespace=\"cosmotech-recovery\"}, pod)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "a164a7f0339f99e89cea5cb47e9be617",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"\"}, namespace)",
+        "configured": null,
+        "resolved": "cosmotech-recovery",
+        "options_count": 13,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "type",
+        "kind": "query",
+        "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"\", namespace=\"cosmotech-recovery\"}, workload_type)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "workload",
+        "kind": "query",
+        "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"\", namespace=\"cosmotech-recovery\", workload_type=~\"\"}, workload)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "72e0e05bef5099e5f049b05fdc429ed4",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-controller-manager\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(up{cluster=\"\", job=\"kube-controller-manager\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:443",
+        "options_count": 2,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "3138fa155d5915769fbded898ac09fd9",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics\",cluster=\"\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:10250",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "ff635a025bcfea7bc3dd4f508990a3e9",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "8b7a8b326d7a6f1f04244066368c67af",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(container_network_receive_packets_total{cluster=\"\"}, namespace)",
+        "configured": "kube-system",
+        "resolved": "kube-system",
+        "options_count": 7,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "bbb2a765a623ae38130206c7d94a160f",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(container_network_receive_packets_total{cluster=\"\"}, namespace)",
+        "configured": "kube-system",
+        "resolved": "kube-system",
+        "options_count": 7,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "type",
+        "kind": "query",
+        "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"\", namespace=\"kube-system\", workload=~\".+\"}, workload_type)",
+        "configured": null,
+        "resolved": "daemonset",
+        "options_count": 2,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "7a18067ce943a40ae25454675c19ff5c",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(container_network_receive_packets_total{cluster=\"\"}, namespace)",
+        "configured": "kube-system",
+        "resolved": "kube-system",
+        "options_count": 7,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "pod",
+        "kind": "query",
+        "query": "label_values(container_network_receive_packets_total{cluster=\"\",namespace=~\"kube-system\"}, pod)",
+        "configured": "kube-system",
+        "resolved": "aws-load-balancer-controller-84ff5f57ff-b867c",
+        "options_count": 52,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "728bf77cc1166d2f3133bf25846876cc",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(kube_pod_info{job=\"kube-state-metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(container_network_receive_packets_total{cluster=\"\"}, namespace)",
+        "configured": "kube-system",
+        "resolved": "kube-system",
+        "options_count": 7,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "workload",
+        "kind": "query",
+        "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"\", namespace=~\"kube-system\", workload=~\".+\"}, workload)",
+        "configured": null,
+        "resolved": "aws-load-balancer-controller",
+        "options_count": 10,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "type",
+        "kind": "query",
+        "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"\", namespace=~\"kube-system\", workload=~\"aws-load-balancer-controller\"}, workload_type)",
+        "configured": null,
+        "resolved": "deployment",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "919b92a8e8041bd567af9edab12c840c",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(kubelet_volume_stats_capacity_bytes{job=\"kubelet\", metrics_path=\"/metrics\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "namespace",
+        "kind": "query",
+        "query": "label_values(kubelet_volume_stats_capacity_bytes{cluster=\"\", job=\"kubelet\", metrics_path=\"/metrics\"}, namespace)",
+        "configured": null,
+        "resolved": "loki",
+        "options_count": 2,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "volume",
+        "kind": "query",
+        "query": "label_values(kubelet_volume_stats_capacity_bytes{cluster=\"\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"loki\"}, persistentvolumeclaim)",
+        "configured": null,
+        "resolved": "storage-loki-0",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "632e265de029684c40b21cb76bca4f94",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-proxy\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-proxy\", cluster=\"\", job=\"kube-proxy\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:10249",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "2e6b6a3b4bddf1427b3a55aa1311c656",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-scheduler\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(up{job=\"kube-scheduler\", cluster=\"\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:443",
+        "options_count": 2,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "7e0a61e486f727d763fb1d86fdd629c2",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=~\"\", sysname!=\"Darwin\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:9100",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "629701ea43bf69291922ea45f4a87d37",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"},  cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=~\"\", sysname=\"Darwin\"}, instance)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "7d57716318ee0dddbac5a7f451fb7753",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=~\"\", sysname!=\"Darwin\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:9100",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "3e97d1d02672cdd0861f4c97c64f89b2",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(node_time_seconds, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "fac67cfbe174d3ef53eb473d73d9212f",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": null,
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(node_time_seconds, cluster)",
+        "configured": null,
+        "resolved": "",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(node_exporter_build_info{job=\"node-exporter\", cluster=~\"\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:9100",
+        "options_count": 6,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  },
+  {
+    "kind": "variables",
+    "dashboard": "observability-tools-lab",
+    "variables": []
+  },
+  {
+    "kind": "variables",
+    "dashboard": "9fa0d141-d019-4ad7-8bc5-42196ee308bd",
+    "variables": [
+      {
+        "name": "datasource",
+        "kind": "datasource",
+        "configured": "default",
+        "resolved": "prometheus",
+        "invalid_current": false
+      },
+      {
+        "name": "cluster",
+        "kind": "query",
+        "query": "label_values(prometheus_build_info{}, cluster)",
+        "configured": [
+          "$__all"
+        ],
+        "resolved": ".*",
+        "options_count": 0,
+        "empty_options": true,
+        "error": null
+      },
+      {
+        "name": "job",
+        "kind": "query",
+        "query": "label_values(prometheus_build_info{cluster=~\".*\"}, job)",
+        "configured": null,
+        "resolved": "prometheus-kube-prometheus-prometheus",
+        "options_count": 1,
+        "empty_options": false,
+        "error": null
+      },
+      {
+        "name": "instance",
+        "kind": "query",
+        "query": "label_values(prometheus_build_info{cluster=~\".*\", job=~\"prometheus-kube-prometheus-prometheus\"}, instance)",
+        "configured": null,
+        "resolved": "[private-endpoint]:9090",
+        "options_count": 3,
+        "empty_options": false,
+        "error": null
+      }
+    ]
+  }
+]

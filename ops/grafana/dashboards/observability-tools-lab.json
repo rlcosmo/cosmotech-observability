@@ -1733,7 +1733,7 @@
       },
       "options": {
         "mode": "markdown",
-        "content": "**Ferramentas:** teste HTTPS a cada minuto a partir do servidor privado, passando pelo endereço público e WAF.\n\n**Componentes internos:** prontidão reportada pelo Kubernetes; sem teste sintético de ingestão.\n\n**Servidores:** ITSM, Argo CD e Zabbix; nodes do EKS ficam na dashboard já existente.\n\n**Sem dados** não significa OK. Confira o estado do coletor e a idade da última coleta. O Prometheus existente retém 24 horas de histórico."
+        "content": "**Ferramentas:** teste HTTPS a cada minuto a partir do servidor privado, passando pelo endereço público e WAF.\n\n**Componentes internos:** prontidão reportada pelo Kubernetes; sem teste sintético de ingestão.\n\n**Servidores:** ITSM, Argo CD e Zabbix; nodes do EKS ficam na dashboard já existente.\n\n**Sem dados** não significa OK. Confira o estado do coletor e a idade da última coleta. O Prometheus restaurado está configurado para até 30 dias ou 8 GB; a disponibilidade real depende da coleta e do ponto restaurado. O Tempo usa retenção de 720h na cópia consistente. Lacunas anteriores à restauração não são preenchidas artificialmente."
       }
     },
     {
