@@ -945,7 +945,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "(cosmotech_gmud_event_timestamp_seconds) and on() (cosmotech_gmud_collection_success == 1 and on() (time() - cosmotech_gmud_last_success_timestamp_seconds < 180))",
+          "expr": "(1000 * cosmotech_gmud_event_timestamp_seconds) and on() (cosmotech_gmud_collection_success == 1 and on() (time() - cosmotech_gmud_last_success_timestamp_seconds < 180))",
           "instant": true,
           "format": "table"
         }

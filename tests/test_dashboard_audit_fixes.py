@@ -10,3 +10,8 @@ def test_grafana_replaces_only_the_proven_obsolete_metric():
 
 def test_retention_text_matches_recovery_configuration():
  d=json.loads((ROOT/'ops/grafana/dashboards/observability-tools-lab.json').read_text());s=json.dumps(d,ensure_ascii=False);assert 'até 30 dias ou 8 GB' in s;assert 'existente retém 24 horas' not in s
+
+def test_gmud_timeline_converts_seconds_to_grafana_milliseconds():
+ d=json.loads((ROOT/'ops/grafana/dashboards/gmud-24h.json').read_text());p=next(p for p in d['panels'] if p['title'].startswith('Linha do tempo'))
+ assert '1000 * cosmotech_gmud_event_timestamp_seconds' in p['targets'][0]['expr']
+ assert p['fieldConfig']['defaults']['unit']=='dateTimeAsIso'

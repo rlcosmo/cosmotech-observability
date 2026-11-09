@@ -1,0 +1,688 @@
+{
+  "provenance": "Authenticated native signed GLPI read on 2026-11-09; sanitized approval mode, no principals/credentials/signatures. Offline fixture only, never published.",
+  "records": [
+    {
+      "id": "3da758c177021feee6f5cb654683ad525abd5cda349cd654141de992aa746490",
+      "change_id": 3,
+      "phase": "OBSERVING",
+      "criticality": "CRITICAL",
+      "synthetic": false,
+      "rcl_id": null,
+      "application": "orders-api",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T02:17:32.156859+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T02:17:32.156859+00:00",
+          "details": {
+            "reason": "critical_change"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T08:44:24.156564+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T08:44:24.156564+00:00",
+          "details": {
+            "execution_id": "5hHDHAD5Edszef1FQbH4Cy"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T08:45:17.823056+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "999f4ad946ef4f67bdb05d44bd0a5135e319ddb2"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "5hHDHAD5Edszef1FQbH4Cy",
+      "run_id": "42147727518",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/5hHDHAD5Edszef1FQbH4Cy",
+      "argo_application": "orders-api-dev"
+    },
+    {
+      "id": "5c57be6fe0be7bacc5ca94aaddaf05e60e50311837e3fd650e4462d7ed5de0a3",
+      "change_id": 4,
+      "phase": "OBSERVING",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": null,
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T02:17:39.826199+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T02:17:39.826199+00:00",
+          "details": {
+            "reason": "sensitive_change_or_unreviewed_dependencies"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T08:45:27.158925+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T08:45:27.158925+00:00",
+          "details": {
+            "execution_id": "MKVIJ36d4wfJrsh1jml1J"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T08:46:26.861214+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "4de7fac9527fcf27ac127a328032aa05fc0a2838"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "MKVIJ36d4wfJrsh1jml1J",
+      "run_id": "42147729148",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/MKVIJ36d4wfJrsh1jml1J",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "443383a4f20b3a1e1144c94035b41e1631ff74b24074ac0bd6a7492e3855dbf0",
+      "change_id": 5,
+      "phase": "ROLLED_BACK",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000001",
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T09:38:06.054062+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T09:38:33.788500+00:00",
+          "details": {
+            "reason": "worker_deterministic_all_conditions_met_ai_disabled"
+          },
+          "manual": false
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T09:38:33.788500+00:00",
+          "details": {
+            "execution_id": "lAvjxmfP9MKrFLukQOWon"
+          },
+          "manual": null
+        },
+        {
+          "type": "rollback_running",
+          "at": "2026-11-06T09:40:18.846127+00:00",
+          "details": {
+            "reason": "missing_metrics"
+          },
+          "manual": null
+        },
+        {
+          "type": "rolled_back",
+          "at": "2026-11-06T09:40:19.236071+00:00",
+          "details": {
+            "rollback_validated": true
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "lAvjxmfP9MKrFLukQOWon",
+      "run_id": "42196288505",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/lAvjxmfP9MKrFLukQOWon",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "922720a27f586311be4e065b5d7baa4aeb2512211517576fa20c8b7049342661",
+      "change_id": 6,
+      "phase": "OBSERVING",
+      "criticality": "CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000002",
+      "application": "orders-api",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T09:45:00.846069+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T09:45:00.846069+00:00",
+          "details": {
+            "reason": "critical_change"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T10:26:32.287048+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T10:26:32.287048+00:00",
+          "details": {
+            "execution_id": "6F3UA0J7u0LLIVJJxSQxwP"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T10:27:16.815223+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "40da69f250604a58f541e973f476d365eb15e084"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "6F3UA0J7u0LLIVJJxSQxwP",
+      "run_id": "42196287796",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/6F3UA0J7u0LLIVJJxSQxwP",
+      "argo_application": "orders-api-dev"
+    },
+    {
+      "id": "cc341a2f742121d8953f318185caac325a94b31843282f5b661693c81486efc4",
+      "change_id": 7,
+      "phase": "OBSERVING",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000003",
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T09:48:56.099496+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T09:49:12.334611+00:00",
+          "details": {
+            "reason": "worker_deterministic_all_conditions_met_ai_disabled"
+          },
+          "manual": false
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T09:49:12.334611+00:00",
+          "details": {
+            "execution_id": "6EzLdoosy2wpJXqZFJPRWU"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T10:04:27.774543+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "09e52d1263d4a409bad8624595e95e47dff092ac"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "6EzLdoosy2wpJXqZFJPRWU",
+      "run_id": "42197528788",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/6EzLdoosy2wpJXqZFJPRWU",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "5a56786f1f220d10bae9f72b788dfc187c4b4149cdf45103e93279c63767c216",
+      "change_id": 8,
+      "phase": "OBSERVING",
+      "criticality": "CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000004",
+      "application": "orders-api",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T10:53:37.020574+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T10:53:37.020574+00:00",
+          "details": {
+            "reason": "critical_change"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T10:55:27.404693+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T10:55:27.404693+00:00",
+          "details": {
+            "execution_id": "2wGGXzMxvve2Rv8w0Hokif"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T10:56:10.666817+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "8fc07c8c9856231d1388b84656a284d9f7ba6623"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "2wGGXzMxvve2Rv8w0Hokif",
+      "run_id": "42205850917",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/2wGGXzMxvve2Rv8w0Hokif",
+      "argo_application": "orders-api-dev"
+    },
+    {
+      "id": "cac4c3cc0f336126e35ea1ceaf7e5163c10691c04bc7d6522dc49284bc89dee2",
+      "change_id": 9,
+      "phase": "ROLLED_BACK",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000005",
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T10:53:46.313516+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T10:54:04.691332+00:00",
+          "details": {
+            "reason": "worker_deterministic_all_conditions_met_ai_disabled"
+          },
+          "manual": false
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T10:54:04.691332+00:00",
+          "details": {
+            "execution_id": "12AXgkuanecQ9CAN4j3MsJ"
+          },
+          "manual": null
+        },
+        {
+          "type": "rollback_running",
+          "at": "2026-11-06T11:10:59.350766+00:00",
+          "details": {
+            "reason": "latency_or_backlog_age"
+          },
+          "manual": null
+        },
+        {
+          "type": "rolled_back",
+          "at": "2026-11-06T11:10:59.845724+00:00",
+          "details": {
+            "rollback_validated": true
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "12AXgkuanecQ9CAN4j3MsJ",
+      "run_id": "42205847804",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/12AXgkuanecQ9CAN4j3MsJ",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "3b0e573fe9ace6ba0807a4b5c890b0f79ecb9750b735bd4174b3baddc93a4ca3",
+      "change_id": 10,
+      "phase": "OBSERVING",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000006",
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T11:14:22.436549+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T11:14:40.442368+00:00",
+          "details": {
+            "reason": "worker_deterministic_all_conditions_met_ai_disabled"
+          },
+          "manual": false
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T11:14:40.442368+00:00",
+          "details": {
+            "execution_id": "7kk9GgJSgE5VkTZWcBp60L"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T11:29:37.526989+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "abd7ab77106193454634a98e0d14a53641e8fe6e"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "7kk9GgJSgE5VkTZWcBp60L",
+      "run_id": "42208472845",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/promotion_gate/7kk9GgJSgE5VkTZWcBp60L",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "f527c62a261c7dde90d3bc58104ad72086c6f07f9d1ebbc47ca659e69ac7a73f",
+      "change_id": 11,
+      "phase": "OBSERVING",
+      "criticality": "CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000007",
+      "application": "orders-api",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T12:26:27.857843+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T12:26:27.857843+00:00",
+          "details": {
+            "reason": "critical_change"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T12:43:34.290190+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T12:43:34.290190+00:00",
+          "details": {
+            "execution_id": "7jyFluWNV09PrJqsDc3kVb"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T12:44:26.029884+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "ebc0e173a67b3e6e3494fab49f4b3ceb28c83b96"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "7jyFluWNV09PrJqsDc3kVb",
+      "run_id": "42217367210",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/release_pipeline/7jyFluWNV09PrJqsDc3kVb",
+      "argo_application": "orders-api-dev"
+    },
+    {
+      "id": "640e8b4d7cb069a194eb39b038e56b0bde86670c34404c2f31e5b716f0fb8fa2",
+      "change_id": 12,
+      "phase": "OBSERVING",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000008",
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T12:26:30.159708+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T12:26:47.796682+00:00",
+          "details": {
+            "reason": "worker_deterministic_all_conditions_met_ai_disabled"
+          },
+          "manual": false
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T12:26:47.796682+00:00",
+          "details": {
+            "execution_id": "50dZBEpEZFcQPNS8qv56rI"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T12:41:30.249208+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "e377f0b797245637cde28a29020267fa4d9e1456"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "50dZBEpEZFcQPNS8qv56rI",
+      "run_id": "42217364152",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/executions/main/cosmotech.promotion/release_pipeline/50dZBEpEZFcQPNS8qv56rI",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "73ecf7f8a38d6c50bd35232a2902586d1c16611cfc59b75fbb565f945b347281",
+      "change_id": 13,
+      "phase": "OBSERVING",
+      "criticality": "CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000009",
+      "application": "orders-api",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T14:06:48.520907+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T14:06:48.520907+00:00",
+          "details": {
+            "reason": "critical_change"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T14:11:43.581318+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T14:11:43.581318+00:00",
+          "details": {
+            "execution_id": "3wN30fLGZrBmhd214817by"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T14:12:36.340917+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "79ff7d6106340bac785de6942e4d91f614ec3352"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "3wN30fLGZrBmhd214817by",
+      "run_id": "42230662459",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/main/executions/cosmotech.promotion/release_pipeline/3wN30fLGZrBmhd214817by",
+      "argo_application": "orders-api-dev"
+    },
+    {
+      "id": "592ca942cdf06dbd433e1563a9da1da246b57d5f6d42dd06fb182f6e65028d61",
+      "change_id": 14,
+      "phase": "ROLLED_BACK",
+      "criticality": "NON_CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000010",
+      "application": "orders-worker",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T14:06:55.920927+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T14:06:55.920927+00:00",
+          "details": {
+            "reason": "sensitive_change_or_unreviewed_dependencies"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T14:12:44.673545+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T14:12:44.673545+00:00",
+          "details": {
+            "execution_id": "H7O83ddlbuiIXWI5Izh4L"
+          },
+          "manual": null
+        },
+        {
+          "type": "rollback_running",
+          "at": "2026-11-06T14:45:44.966424+00:00",
+          "details": {
+            "reason": "observation_timeout"
+          },
+          "manual": null
+        },
+        {
+          "type": "rolled_back",
+          "at": "2026-11-06T14:45:45.506980+00:00",
+          "details": {
+            "rollback_validated": true
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "H7O83ddlbuiIXWI5Izh4L",
+      "run_id": "42230662176",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/main/executions/cosmotech.promotion/release_pipeline/H7O83ddlbuiIXWI5Izh4L",
+      "argo_application": "orders-worker-dev"
+    },
+    {
+      "id": "2250df8415c073387260b5cb9364e86f8239051db7fb50df0914bb5e2cdca372",
+      "change_id": 15,
+      "phase": "OBSERVING",
+      "criticality": "CRITICAL",
+      "synthetic": false,
+      "rcl_id": "RCL000011",
+      "application": "orders-api",
+      "events": [
+        {
+          "type": "created",
+          "at": "2026-11-06T17:50:36.578395+00:00",
+          "details": {},
+          "manual": null
+        },
+        {
+          "type": "human_review",
+          "at": "2026-11-06T17:50:36.578395+00:00",
+          "details": {
+            "reason": "critical_change"
+          },
+          "manual": null
+        },
+        {
+          "type": "approved",
+          "at": "2026-11-06T17:52:42.349988+00:00",
+          "details": {
+            "reason": "human_decision"
+          },
+          "manual": true
+        },
+        {
+          "type": "deploying",
+          "at": "2026-11-06T17:52:42.349988+00:00",
+          "details": {
+            "execution_id": "3XbRhKRmp9c3BtCj1yRNGD"
+          },
+          "manual": null
+        },
+        {
+          "type": "observing",
+          "at": "2026-11-06T17:54:10.947120+00:00",
+          "details": {
+            "technical_validation": true,
+            "gitops_revision": "5d4c01f9a5f5567c973f01c28f9102436ac9c086"
+          },
+          "manual": null
+        }
+      ],
+      "execution_id": "3XbRhKRmp9c3BtCj1yRNGD",
+      "run_id": "42264920969",
+      "kestra_url": "https://kestra.cosmotechsolutions.com.br/ui/main/executions/cosmotech.promotion/release_pipeline/3XbRhKRmp9c3BtCj1yRNGD",
+      "argo_application": "orders-api-dev"
+    }
+  ]
+}
