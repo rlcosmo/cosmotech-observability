@@ -58,7 +58,7 @@ def test_real_historical_records_reconcile_with_original_events():
 def test_rolling_hour_buckets_include_partial_start_hour():
     import json
     # A rolling day crosses 25 UTC hour buckets whenever now is not on the hour.
-    now=NOW+1800;r=change([event('created',-85000)])
+    now=NOW+1800;r=change([event('created',-84000)])
     text,p=render([r],now)
     buckets=[line for line in text.splitlines() if line.startswith('cosmotech_gmud_created_hourly{')]
     assert len(buckets)==25
