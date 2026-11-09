@@ -1,0 +1,17 @@
+[Unit]
+Description=Read-only signed GLPI GMUD telemetry
+After=network-online.target
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/cosmotech/gmud-observer/scripts/collect_gmud_metrics.py
+Environment=LAB_AWS_CLI=/snap/aws-cli/current/bin/aws
+StateDirectory=cosmotech-gmud-observer
+StateDirectoryMode=0755
+TimeoutStartSec=90
+MemoryMax=192M
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cosmotech-gmud-observer
+UMask=0022
