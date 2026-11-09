@@ -43,3 +43,38 @@ def test_synthetic_changes_are_excluded():
 
 def test_future_event_is_rejected():
  with pytest.raises(ValueError):project([change([event('created',100)])],NOW)
+
+def test_real_historical_records_reconcile_with_original_events():
+    import json
+    from pathlib import Path
+    records=json.loads((Path(__file__).parent/'fixtures/gmud-real-history-sanitized.json').read_text())['records']
+    historic=datetime.fromisoformat('2026-11-06T17:54:11.947120+00:00').timestamp()
+    p=project(records,historic)
+    expected={'created':13,'approved_auto':5,'approved_manual':8,'deploy_started':13,'deploy_success':10,'rollback':3}
+    for name,total in expected.items():assert sum(value for (kind,_,_),value in p['counts'].items() if kind==name)==total
+    assert len(p['events'])==52
+    assert project(records,NOW)['events']==[]
+
+def test_rolling_hour_buckets_include_partial_start_hour():
+    import json
+    # A rolling day crosses 25 UTC hour buckets whenever now is not on the hour.
+    now=NOW+1800;r=change([event('created',-85000)])
+    text,p=render([r],now)
+    buckets=[line for line in text.splitlines() if line.startswith('cosmotech_gmud_created_hourly{')]
+    assert len(buckets)==25
+    assert sum(float(line.rsplit(' ',1)[1]) for line in buckets)==sum(v for (k,_,_),v in p['counts'].items() if k=='created')==1
+
+def test_source_failure_removes_previous_business_zero_and_redacts_errors(tmp_path,monkeypatch,capsys):
+    import importlib.util,sys,types,subprocess
+    from pathlib import Path
+    script=Path(__file__).resolve().parents[1]/'scripts/collect_gmud_metrics.py'
+    spec=importlib.util.spec_from_file_location('collector',script);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    monkeypatch.setitem(sys.modules,'automation',types.ModuleType('automation'))
+    monkeypatch.setitem(sys.modules,'automation.gmud',types.SimpleNamespace(GLPIChanges=object,ChangeJournal=object))
+    def fail(*a,**kw):raise RuntimeError('private-password-must-not-appear')
+    monkeypatch.setattr(module.subprocess,'run',fail)
+    (tmp_path/'gmud.prom').write_text('cosmotech_gmud_events_24h 0\n')
+    assert module.collect(tmp_path)==1
+    assert 'cosmotech_gmud_collection_success 0' in (tmp_path/'gmud.prom').read_text()
+    assert 'cosmotech_gmud_events_24h' not in (tmp_path/'gmud.prom').read_text()
+    assert 'private-password' not in capsys.readouterr().out
