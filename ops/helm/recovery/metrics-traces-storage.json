@@ -1,0 +1,132 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "cosmotech-p0-prometheus-1b"
+      },
+      "spec": {
+        "capacity": {
+          "storage": "10Gi"
+        },
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "persistentVolumeReclaimPolicy": "Retain",
+        "storageClassName": "",
+        "csi": {
+          "driver": "ebs.csi.aws.com",
+          "volumeHandle": "vol-0d761779801b75422",
+          "fsType": "ext4"
+        },
+        "claimRef": {
+          "namespace": "observability",
+          "name": "prometheus-p0-1b"
+        },
+        "nodeAffinity": {
+          "required": {
+            "nodeSelectorTerms": [
+              {
+                "matchExpressions": [
+                  {
+                    "key": "topology.kubernetes.io/zone",
+                    "operator": "In",
+                    "values": [
+                      "us-east-1b"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "prometheus-p0-1b",
+        "namespace": "observability"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "10Gi"
+          }
+        },
+        "storageClassName": "",
+        "volumeName": "cosmotech-p0-prometheus-1b"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolume",
+      "metadata": {
+        "name": "cosmotech-p0-tempo-1b"
+      },
+      "spec": {
+        "capacity": {
+          "storage": "10Gi"
+        },
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "persistentVolumeReclaimPolicy": "Retain",
+        "storageClassName": "",
+        "csi": {
+          "driver": "ebs.csi.aws.com",
+          "volumeHandle": "vol-0490f87ab26f9139a",
+          "fsType": "ext4"
+        },
+        "claimRef": {
+          "namespace": "observability",
+          "name": "tempo-p0-1b"
+        },
+        "nodeAffinity": {
+          "required": {
+            "nodeSelectorTerms": [
+              {
+                "matchExpressions": [
+                  {
+                    "key": "topology.kubernetes.io/zone",
+                    "operator": "In",
+                    "values": [
+                      "us-east-1b"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "tempo-p0-1b",
+        "namespace": "observability"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "10Gi"
+          }
+        },
+        "storageClassName": "",
+        "volumeName": "cosmotech-p0-tempo-1b"
+      }
+    }
+  ]
+}
