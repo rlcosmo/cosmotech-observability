@@ -1,0 +1,35 @@
+{
+  "alloy": {
+    "resources": {
+      "requests": {
+        "cpu": "5m",
+        "memory": "8Mi"
+      },
+      "limits": {
+        "cpu": "200m",
+        "memory": "256Mi"
+      }
+    }
+  },
+  "configReloader": {
+    "resources": {
+      "requests": {
+        "cpu": "10m",
+        "memory": "50Mi"
+      },
+      "limits": {
+        "cpu": "100m",
+        "memory": "128Mi"
+      }
+    }
+  },
+  "controller": {
+    "updateStrategy": {
+      "type": "RollingUpdate",
+      "rollingUpdate": {
+        "maxUnavailable": 1,
+        "maxSurge": 0
+      }
+    }
+  }
+}
