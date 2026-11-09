@@ -1,0 +1,70 @@
+{
+  "spec": {
+    "storage": {
+      "emptyDir": {},
+      "volumeClaimTemplate": null
+    },
+    "retention": "30d",
+    "retentionSize": "8GB",
+    "resources": {
+      "requests": {
+        "cpu": "150m",
+        "memory": "350Mi"
+      },
+      "limits": {
+        "cpu": "1",
+        "memory": "1Gi"
+      }
+    },
+    "nodeSelector": {
+      "kubernetes.io/hostname": "ip-10-20-12-35.ec2.internal"
+    },
+    "volumes": [
+      {
+        "name": "recovered-data",
+        "persistentVolumeClaim": {
+          "claimName": "prometheus-p0-1b"
+        }
+      }
+    ],
+    "containers": [
+      {
+        "name": "prometheus",
+        "volumeMounts": [
+          {
+            "name": "recovered-data",
+            "mountPath": "/prometheus"
+          }
+        ]
+      },
+      {
+        "name": "config-reloader",
+        "resources": {
+          "requests": {
+            "cpu": "10m",
+            "memory": "16Mi"
+          },
+          "limits": {
+            "cpu": "100m",
+            "memory": "128Mi"
+          }
+        }
+      }
+    ],
+    "initContainers": [
+      {
+        "name": "init-config-reloader",
+        "resources": {
+          "requests": {
+            "cpu": "10m",
+            "memory": "16Mi"
+          },
+          "limits": {
+            "cpu": "100m",
+            "memory": "128Mi"
+          }
+        }
+      }
+    ]
+  }
+}
