@@ -1,0 +1,68 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "nodeSelector": {
+          "kubernetes.io/os": "linux",
+          "topology.kubernetes.io/zone": "us-east-1b",
+          "kubernetes.io/hostname": null
+        },
+        "volumes": [
+          {
+            "name": "storage",
+            "persistentVolumeClaim": {
+              "claimName": "cosmotech-recovery-grafana-20261111"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "grafana-sc-dashboard",
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "24Mi"
+              },
+              "limits": {
+                "cpu": "100m",
+                "memory": "192Mi"
+              }
+            }
+          },
+          {
+            "name": "grafana-sc-datasources",
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "24Mi"
+              },
+              "limits": {
+                "cpu": "100m",
+                "memory": "192Mi"
+              }
+            }
+          }
+        ],
+        "initContainers": [
+          {
+            "name": "init-chown-data",
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "24Mi"
+              },
+              "limits": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "strategy": {
+      "type": "Recreate",
+      "rollingUpdate": null
+    }
+  }
+}

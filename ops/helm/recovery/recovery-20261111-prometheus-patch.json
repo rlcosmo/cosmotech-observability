@@ -1,0 +1,17 @@
+{
+  "spec": {
+    "nodeSelector": {
+      "kubernetes.io/os": "linux",
+      "topology.kubernetes.io/zone": "us-east-1b",
+      "kubernetes.io/hostname": null
+    },
+    "volumes": [
+      {
+        "name": "recovered-data",
+        "persistentVolumeClaim": {
+          "claimName": "cosmotech-recovery-prometheus-20261111"
+        }
+      }
+    ]
+  }
+}

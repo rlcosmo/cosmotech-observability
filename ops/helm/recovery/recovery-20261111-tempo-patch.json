@@ -1,0 +1,21 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "nodeSelector": {
+          "kubernetes.io/os": "linux",
+          "topology.kubernetes.io/zone": "us-east-1b",
+          "kubernetes.io/hostname": null
+        },
+        "volumes": [
+          {
+            "name": "recovered-storage",
+            "persistentVolumeClaim": {
+              "claimName": "cosmotech-recovery-tempo-20261111"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

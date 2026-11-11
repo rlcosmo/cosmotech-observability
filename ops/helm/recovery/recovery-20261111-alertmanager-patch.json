@@ -1,0 +1,45 @@
+{
+  "spec": {
+    "nodeSelector": {
+      "kubernetes.io/os": "linux",
+      "topology.kubernetes.io/zone": "us-east-1b",
+      "kubernetes.io/hostname": null
+    },
+    "storage": {
+      "emptyDir": {},
+      "volumeClaimTemplate": null
+    },
+    "volumes": [
+      {
+        "name": "recovered-data",
+        "persistentVolumeClaim": {
+          "claimName": "cosmotech-recovery-alertmanager-20261111"
+        }
+      }
+    ],
+    "containers": [
+      {
+        "name": "alertmanager",
+        "volumeMounts": [
+          {
+            "name": "recovered-data",
+            "mountPath": "/alertmanager"
+          }
+        ]
+      },
+      {
+        "name": "config-reloader",
+        "resources": {
+          "limits": {
+            "cpu": "100m",
+            "memory": "128Mi"
+          },
+          "requests": {
+            "cpu": "5m",
+            "memory": "8Mi"
+          }
+        }
+      }
+    ]
+  }
+}

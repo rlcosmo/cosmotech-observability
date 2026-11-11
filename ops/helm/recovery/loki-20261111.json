@@ -1,0 +1,17 @@
+{
+  "singleBinary": {
+    "persistence": {
+      "enabled": false,
+      "whenScaled": "Retain",
+      "whenDeleted": "Retain",
+      "dataVolumeParameters": {
+        "persistentVolumeClaim": {
+          "claimName": "cosmotech-recovery-loki-20261111"
+        }
+      }
+    },
+    "nodeSelector": {
+      "topology.kubernetes.io/zone": "us-east-1b"
+    }
+  }
+}

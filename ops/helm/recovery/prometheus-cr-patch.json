@@ -17,13 +17,14 @@
       }
     },
     "nodeSelector": {
-      "kubernetes.io/hostname": "ip-10-20-12-35.ec2.internal"
+      "kubernetes.io/os": "linux",
+      "topology.kubernetes.io/zone": "us-east-1b"
     },
     "volumes": [
       {
         "name": "recovered-data",
         "persistentVolumeClaim": {
-          "claimName": "prometheus-p0-1b"
+          "claimName": "cosmotech-recovery-prometheus-20261111"
         }
       }
     ],

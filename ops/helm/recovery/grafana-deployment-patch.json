@@ -3,13 +3,15 @@
     "template": {
       "spec": {
         "nodeSelector": {
-          "kubernetes.io/hostname": "ip-10-20-12-52.ec2.internal"
+          "kubernetes.io/os": "linux",
+          "topology.kubernetes.io/zone": "us-east-1b",
+          "kubernetes.io/hostname": null
         },
         "volumes": [
           {
             "name": "storage",
             "persistentVolumeClaim": {
-              "claimName": "grafana-p0-1b"
+              "claimName": "cosmotech-recovery-grafana-20261111"
             }
           }
         ],
@@ -57,6 +59,10 @@
           }
         ]
       }
+    },
+    "strategy": {
+      "type": "Recreate",
+      "rollingUpdate": null
     }
   }
 }

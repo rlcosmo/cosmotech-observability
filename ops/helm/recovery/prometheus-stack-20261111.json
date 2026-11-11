@@ -1,0 +1,181 @@
+{
+  "grafana": {
+    "persistence": {
+      "existingClaim": "cosmotech-recovery-grafana-20261111"
+    },
+    "nodeSelector": {
+      "kubernetes.io/hostname": null,
+      "kubernetes.io/os": "linux",
+      "topology.kubernetes.io/zone": "us-east-1b"
+    },
+    "sidecar": {
+      "resources": {
+        "requests": {
+          "cpu": "10m",
+          "memory": "24Mi"
+        },
+        "limits": {
+          "cpu": "100m",
+          "memory": "192Mi"
+        }
+      }
+    },
+    "initChownData": {
+      "resources": {
+        "requests": {
+          "cpu": "10m",
+          "memory": "24Mi"
+        },
+        "limits": {
+          "cpu": "100m",
+          "memory": "128Mi"
+        }
+      }
+    },
+    "deploymentStrategy": {
+      "type": "Recreate"
+    }
+  },
+  "prometheus": {
+    "prometheusSpec": {
+      "retention": "30d",
+      "retentionSize": "8GB",
+      "resources": {
+        "requests": {
+          "cpu": "150m",
+          "memory": "350Mi"
+        },
+        "limits": {
+          "cpu": "1",
+          "memory": "1Gi"
+        }
+      },
+      "nodeSelector": {
+        "kubernetes.io/hostname": null,
+        "kubernetes.io/os": "linux",
+        "topology.kubernetes.io/zone": "us-east-1b"
+      },
+      "volumes": [
+        {
+          "name": "recovered-data",
+          "persistentVolumeClaim": {
+            "claimName": "cosmotech-recovery-prometheus-20261111"
+          }
+        }
+      ],
+      "containers": [
+        {
+          "name": "prometheus",
+          "volumeMounts": [
+            {
+              "name": "recovered-data",
+              "mountPath": "/prometheus"
+            }
+          ]
+        },
+        {
+          "name": "config-reloader",
+          "resources": {
+            "requests": {
+              "cpu": "10m",
+              "memory": "16Mi"
+            },
+            "limits": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          }
+        }
+      ],
+      "initContainers": [
+        {
+          "name": "init-config-reloader",
+          "resources": {
+            "requests": {
+              "cpu": "10m",
+              "memory": "16Mi"
+            },
+            "limits": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          }
+        }
+      ],
+      "storageSpec": {
+        "emptyDir": {},
+        "volumeClaimTemplate": null
+      }
+    }
+  },
+  "alertmanager": {
+    "alertmanagerSpec": {
+      "resources": {
+        "requests": {
+          "cpu": "5m",
+          "memory": "200Mi"
+        },
+        "limits": {
+          "cpu": "250m",
+          "memory": "512Mi"
+        }
+      },
+      "containers": [
+        {
+          "name": "alertmanager",
+          "volumeMounts": [
+            {
+              "name": "recovered-data",
+              "mountPath": "/alertmanager"
+            }
+          ]
+        },
+        {
+          "name": "config-reloader",
+          "resources": {
+            "requests": {
+              "cpu": "5m",
+              "memory": "8Mi"
+            },
+            "limits": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          }
+        }
+      ],
+      "initContainers": [
+        {
+          "name": "init-config-reloader",
+          "resources": {
+            "requests": {
+              "cpu": "5m",
+              "memory": "8Mi"
+            },
+            "limits": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          }
+        }
+      ],
+      "nodeSelector": {
+        "kubernetes.io/hostname": null,
+        "kubernetes.io/os": "linux",
+        "topology.kubernetes.io/zone": "us-east-1b"
+      },
+      "storage": {
+        "emptyDir": {},
+        "volumeClaimTemplate": null
+      },
+      "volumes": [
+        {
+          "name": "recovered-data",
+          "persistentVolumeClaim": {
+            "claimName": "cosmotech-recovery-alertmanager-20261111"
+          }
+        }
+      ]
+    }
+  }
+}
