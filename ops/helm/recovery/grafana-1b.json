@@ -1,10 +1,11 @@
 {
   "grafana": {
     "persistence": {
-      "existingClaim": "grafana-p0-1b"
+      "existingClaim": "cosmotech-recovery-grafana-20261111"
     },
     "nodeSelector": {
-      "kubernetes.io/hostname": "ip-10-20-12-52.ec2.internal"
+      "kubernetes.io/os": "linux",
+      "topology.kubernetes.io/zone": "us-east-1b"
     },
     "sidecar": {
       "resources": {
@@ -29,6 +30,9 @@
           "memory": "128Mi"
         }
       }
+    },
+    "deploymentStrategy": {
+      "type": "Recreate"
     }
   }
 }
